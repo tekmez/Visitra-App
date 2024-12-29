@@ -1,7 +1,8 @@
 import React from "react";
 import { SafeAreaView, StyleSheet } from "react-native";
 import { colors } from "../theme/colors";
-import { PlaceFormHeader, PlaceFormFields } from "../components/form";
+import { PlaceFormHeader } from "../components/form";
+import { PlaceFormFields } from "../components/form/PlaceFormFields";
 import { useAddPlaceForm } from "../hooks/useAddPlaceForm";
 
 const AddPlaceScreen: React.FC = () => {
