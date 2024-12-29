@@ -5,7 +5,7 @@ import { PlaceCard } from "../components/PlaceCard";
 import { PlaceListItem } from "../components/PlaceListItem";
 import { TabBar } from "../components/TabBar";
 import { fonts, fontConfig } from "../theme/fonts";
-import { places, Place } from "../constants/places";
+import { places as initialPlaces, Place } from "../constants/places";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../types/navigation";
@@ -15,6 +15,7 @@ type NavigationProp = StackNavigationProp<RootStackParamList>;
 
 const HomeScreen = () => {
   const [activeTab, setActiveTab] = useState<TabType>("date");
+  const [places, setPlaces] = useState<Place[]>(initialPlaces);
   const navigation = useNavigation<NavigationProp>();
 
   let [fontsLoaded] = useFonts(fontConfig);
@@ -30,6 +31,20 @@ const HomeScreen = () => {
 
   const handleExplore = (place: Place) => {
     navigation.navigate("PlaceDetail", { place });
+  };
+
+  const handleFavoritePress = (placeId: string) => {
+    setPlaces(
+      places.map((place) => {
+        if (place.id === placeId) {
+          return {
+            ...place,
+            status: place.status === "favorites" ? "date" : "favorites",
+          };
+        }
+        return place;
+      })
+    );
   };
 
   return (
@@ -67,6 +82,8 @@ const HomeScreen = () => {
               location={place.location}
               category={place.category}
               onExplore={() => handleExplore(place)}
+              isFavorite={place.status === "favorites"}
+              onFavoritePress={() => handleFavoritePress(place.id)}
             />
           ))}
         </View>
