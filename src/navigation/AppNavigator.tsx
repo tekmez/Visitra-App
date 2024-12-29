@@ -1,19 +1,17 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createStackNavigator } from "@react-navigation/stack";
 import { Ionicons } from "@expo/vector-icons";
 import HomeScreen from "../screens/HomeScreen";
 import AddPlaceScreen from "../screens/AddPlaceScreen";
 import ProfileScreen from "../screens/ProfileScreen";
-
-type RootTabParamList = {
-  Home: undefined;
-  Add: undefined;
-  Profile: undefined;
-};
+import PlaceDetailScreen from "../screens/PlaceDetailScreen";
+import { RootStackParamList, RootTabParamList } from "../types/navigation";
 
 const Tab = createBottomTabNavigator<RootTabParamList>();
+const Stack = createStackNavigator<RootStackParamList>();
 
-const AppNavigator = () => {
+const TabNavigator = () => {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -55,6 +53,15 @@ const AppNavigator = () => {
         options={{ tabBarLabel: "Profil" }}
       />
     </Tab.Navigator>
+  );
+};
+
+const AppNavigator = () => {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="TabNavigator" component={TabNavigator} />
+      <Stack.Screen name="PlaceDetail" component={PlaceDetailScreen} />
+    </Stack.Navigator>
   );
 };
 

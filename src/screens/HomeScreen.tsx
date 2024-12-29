@@ -5,12 +5,17 @@ import { PlaceCard } from "../components/PlaceCard";
 import { PlaceListItem } from "../components/PlaceListItem";
 import { TabBar } from "../components/TabBar";
 import { fonts, fontConfig } from "../theme/fonts";
-import { places } from "../constants/places";
+import { places, Place } from "../constants/places";
+import { useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "../types/navigation";
 
 type TabType = "date" | "favorites" | "toVisit" | "visited";
+type NavigationProp = StackNavigationProp<RootStackParamList>;
 
 const HomeScreen = () => {
   const [activeTab, setActiveTab] = useState<TabType>("date");
+  const navigation = useNavigation<NavigationProp>();
 
   let [fontsLoaded] = useFonts(fontConfig);
 
@@ -22,6 +27,10 @@ const HomeScreen = () => {
     activeTab === "date"
       ? places
       : places.filter((place) => place.status === activeTab);
+
+  const handleExplore = (place: Place) => {
+    navigation.navigate("PlaceDetail", { place });
+  };
 
   return (
     <View style={styles.container}>
@@ -57,7 +66,7 @@ const HomeScreen = () => {
               name={place.name}
               location={place.location}
               category={place.category}
-              onExplore={() => {}}
+              onExplore={() => handleExplore(place)}
             />
           ))}
         </View>
