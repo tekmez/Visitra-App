@@ -25,7 +25,7 @@ export const CategoryPicker: React.FC<CategoryPickerProps> = ({
   error,
 }) => {
   return (
-    <View style={styles.categoriesContainer}>
+    <View style={styles.container}>
       <Label>Kategori</Label>
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         {categories.map((cat) => (
@@ -33,14 +33,14 @@ export const CategoryPicker: React.FC<CategoryPickerProps> = ({
             key={cat}
             style={[
               styles.categoryButton,
-              selectedCategory === cat && styles.selectedCategory,
+              selectedCategory === cat && styles.categoryButtonSelected,
             ]}
             onPress={() => onCategorySelect(cat)}
           >
             <Text
               style={[
                 styles.categoryText,
-                selectedCategory === cat && styles.selectedCategoryText,
+                selectedCategory === cat && styles.categoryTextSelected,
               ]}
             >
               {cat}
@@ -54,24 +54,31 @@ export const CategoryPicker: React.FC<CategoryPickerProps> = ({
 };
 
 const styles = StyleSheet.create({
-  categoriesContainer: {
+  container: {
     marginBottom: 16,
   },
   categoryButton: {
-    paddingHorizontal: 16,
     paddingVertical: 8,
+    paddingHorizontal: 16,
     borderRadius: 20,
-    backgroundColor: colors.background.secondary,
     marginRight: 8,
+    marginBottom: 8,
+    backgroundColor: colors.background.secondary,
   },
-  selectedCategory: {
-    backgroundColor: colors.primary,
+  categoryButtonSelected: {
+    backgroundColor: colors.secondary,
   },
   categoryText: {
-    fontFamily: fonts.regular,
+    fontSize: 14,
+    fontFamily: fonts.medium,
     color: colors.text.secondary,
   },
-  selectedCategoryText: {
-    color: colors.background.primary,
+  categoryTextSelected: {
+    color: colors.text.primary,
+  },
+  categoriesContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    marginTop: 8,
   },
 });
