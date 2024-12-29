@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 import HomeScreen from "../screens/HomeScreen";
 import AddPlaceScreen from "../screens/AddPlaceScreen";
+import ProfileScreen from "../screens/ProfileScreen";
 
 type RootTabParamList = {
   Home: undefined;
@@ -50,7 +51,7 @@ const AppNavigator = () => {
       />
       <Tab.Screen
         name="Profile"
-        component={HomeScreen}
+        component={ProfileScreen}
         options={{ tabBarLabel: "Profil" }}
       />
     </Tab.Navigator>
