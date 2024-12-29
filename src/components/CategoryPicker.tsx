@@ -8,10 +8,8 @@ import {
 } from "react-native";
 import { fonts } from "../theme/fonts";
 import { colors } from "../theme/colors";
-import { categories } from "../schema/place";
+import { categories, Category } from "../constants/categories";
 import { Label, ErrorText } from "./common";
-
-type Category = (typeof categories)[number];
 
 interface CategoryPickerProps {
   selectedCategory: Category | undefined;
@@ -30,20 +28,22 @@ export const CategoryPicker: React.FC<CategoryPickerProps> = ({
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         {categories.map((cat) => (
           <TouchableOpacity
-            key={cat}
+            key={cat.title}
             style={[
               styles.categoryButton,
-              selectedCategory === cat && styles.categoryButtonSelected,
+              selectedCategory?.title === cat.title &&
+                styles.categoryButtonSelected,
             ]}
             onPress={() => onCategorySelect(cat)}
           >
             <Text
               style={[
                 styles.categoryText,
-                selectedCategory === cat && styles.categoryTextSelected,
+                selectedCategory?.title === cat.title &&
+                  styles.categoryTextSelected,
               ]}
             >
-              {cat}
+              {cat.title}
             </Text>
           </TouchableOpacity>
         ))}
