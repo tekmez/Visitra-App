@@ -35,7 +35,7 @@ const HomeScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>Places</Text>
+        <Text style={styles.title}>Visitra</Text>
       </View>
 
       <TabBar activeTab={activeTab} onTabChange={setActiveTab} />
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 20,
     paddingTop: 60,
-    paddingBottom: 20,
+    paddingBottom: 10,
   },
   title: {
     fontSize: 28,
