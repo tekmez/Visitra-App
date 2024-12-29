@@ -66,7 +66,7 @@ export const ImagePicker: React.FC<ImagePickerProps> = ({
       const remainingSlots = MAX_IMAGES - selectedImages.length;
 
       const result = await ImagePickerExpo.launchImageLibraryAsync({
-        mediaTypes: ImagePickerExpo.MediaTypeOptions.Images,
+        mediaTypes: "images",
         allowsEditing: false,
         aspect: [4, 3],
         quality: 1,
