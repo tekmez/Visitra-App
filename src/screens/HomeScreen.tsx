@@ -6,6 +6,7 @@ import { PlaceListItem } from "../components/PlaceListItem";
 import { TabBar } from "../components/TabBar";
 import { fonts, fontConfig } from "../theme/fonts";
 import { places as initialPlaces, Place } from "../constants/places";
+import { categories } from "../constants/categories";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../types/navigation";
@@ -16,6 +17,7 @@ type NavigationProp = StackNavigationProp<RootStackParamList>;
 const HomeScreen = () => {
   const [activeTab, setActiveTab] = useState<TabType>("places");
   const [places, setPlaces] = useState<Place[]>(initialPlaces);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const navigation = useNavigation<NavigationProp>();
 
   let [fontsLoaded] = useFonts(fontConfig);
@@ -24,12 +26,23 @@ const HomeScreen = () => {
     return null;
   }
 
-  const filteredPlaces =
-    activeTab === "places"
-      ? places
-      : activeTab === "favorites"
-      ? places.filter((place) => place.isFavorite)
-      : places.filter((place) => place.status === activeTab);
+  const filteredPlaces = places.filter((place) => {
+    // Önce tab filtrelemesi
+    const tabFilter =
+      activeTab === "places"
+        ? true
+        : activeTab === "favorites"
+        ? place.isFavorite
+        : place.status === activeTab;
+
+    // Sonra kategori filtrelemesi
+    const categoryFilter = selectedCategory
+      ? place.category === selectedCategory
+      : true;
+
+    // İki filtreyi de uygula
+    return tabFilter && categoryFilter;
+  });
 
   const handleExplore = (place: Place) => {
     navigation.navigate("PlaceDetail", { place });
@@ -49,6 +62,10 @@ const HomeScreen = () => {
     );
   };
 
+  const handleCategoryPress = (category: string) => {
+    setSelectedCategory(selectedCategory === category ? null : category);
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -58,19 +75,19 @@ const HomeScreen = () => {
       <TabBar activeTab={activeTab} onTabChange={setActiveTab} />
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        <Text style={styles.sectionTitle}>On the map</Text>
+        <Text style={styles.sectionTitle}>Categories</Text>
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
-          style={styles.placesContainer}
+          style={styles.categoriesContainer}
         >
-          {filteredPlaces.map((place) => (
+          {categories.map((category) => (
             <PlaceCard
-              key={`card-${place.id}`}
-              image={place.image}
-              name={place.name}
-              location={place.location}
-              category={place.category}
+              key={category.title}
+              image={category.image}
+              name={category.title}
+              isSelected={selectedCategory === category.title}
+              onPress={() => handleCategoryPress(category.title)}
             />
           ))}
         </ScrollView>
@@ -121,7 +138,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginHorizontal: 20,
   },
-  placesContainer: {
+  categoriesContainer: {
     paddingHorizontal: 20,
     marginTop: 15,
   },

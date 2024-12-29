@@ -12,8 +12,9 @@ import { fonts } from "../theme/fonts";
 type PlaceCardProps = {
   image: { uri: string };
   name: string;
-  location: string;
-  category: string;
+  location?: string;
+  category?: string;
+  isSelected?: boolean;
   onPress?: () => void;
 };
 
@@ -22,15 +23,23 @@ export const PlaceCard = ({
   name,
   location,
   category,
+  isSelected,
   onPress,
 }: PlaceCardProps) => {
   return (
-    <TouchableOpacity style={styles.card} onPress={onPress}>
+    <TouchableOpacity
+      style={[styles.card, isSelected && styles.selectedCard]}
+      onPress={onPress}
+    >
       <Image source={image} style={styles.image} />
       <View style={styles.info}>
-        <Text style={styles.name}>{name},</Text>
-        <Text style={styles.location}>{location}</Text>
-        <Text style={styles.category}>{category}</Text>
+        <Text style={styles.name}>{name}</Text>
+        {location && (
+          <>
+            <Text style={styles.location}>{location}</Text>
+            <Text style={styles.category}>{category}</Text>
+          </>
+        )}
       </View>
     </TouchableOpacity>
   );
@@ -51,6 +60,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
+  },
+  selectedCard: {
+    borderWidth: 2,
+    borderColor: "#FFB800",
   },
   image: {
     width: "100%",

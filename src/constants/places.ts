@@ -1,5 +1,3 @@
-import { categories } from "../schema/place";
-
 export type Place = {
   id: string;
   image: { uri: string };
@@ -29,7 +27,7 @@ export const places: Place[] = [
     ],
     name: "Cannon Beach",
     location: "Oregon",
-    category: "Beach house",
+    category: "Relax",
     description: "Muhteşem manzaralı plaj evi",
     status: "toVisit",
     isFavorite: false,
@@ -48,7 +46,7 @@ export const places: Place[] = [
     ],
     name: "Lake Tahoe",
     location: "California",
-    category: "Cabin",
+    category: "Adventure",
     description: "Göl kenarında huzurlu bir kabin",
     status: "visited",
     isFavorite: false,
@@ -67,7 +65,7 @@ export const places: Place[] = [
     ],
     name: "Big Sur",
     location: "California",
-    category: "Cabin",
+    category: "Explore",
     description: "Okyanus manzaralı dağ evi",
     status: "toVisit",
     isFavorite: true,
@@ -86,7 +84,7 @@ export const places: Place[] = [
     ],
     name: "Aspen",
     location: "Colorado",
-    category: "Ski Lodge",
+    category: "Adventure",
     description: "Kayak merkezine yakın lüks konaklama",
     status: "toVisit",
     isFavorite: false,
@@ -104,7 +102,7 @@ export const places: Place[] = [
     ],
     name: "Santorini Villa",
     location: "Greece",
-    category: "Villa",
+    category: "Explore",
     description: "Ege'nin incisi Santorini'de muhteşem villa",
     status: "toVisit",
     isFavorite: false,
@@ -123,7 +121,7 @@ export const places: Place[] = [
     ],
     name: "Maldives Resort",
     location: "Maldives",
-    category: "Beach Resort",
+    category: "Relax",
     description: "Kristal berraklığında suların ortasında lüks resort",
     status: "toVisit",
     isFavorite: true,
@@ -141,7 +139,7 @@ export const places: Place[] = [
     ],
     name: "Swiss Alps Chalet",
     location: "Switzerland",
-    category: "Mountain Chalet",
+    category: "Adventure",
     description: "Alp Dağları'nın eteklerinde geleneksel chalet",
     status: "visited",
     isFavorite: true,

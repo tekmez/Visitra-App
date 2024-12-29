@@ -9,11 +9,9 @@ import {
 } from "react-native";
 import { colors } from "../theme/colors";
 import { fonts } from "../theme/fonts";
+import { Category, categories } from "../constants/categories";
 
-interface CategoryItemProps {
-  title: string;
-  count: number;
-  image: { uri: string };
+interface CategoryItemProps extends Category {
   onPress: () => void;
 }
 
@@ -27,7 +25,7 @@ const CategoryItem: React.FC<CategoryItemProps> = ({
     <Image source={image} style={styles.categoryImage} />
     <View style={styles.categoryInfo}>
       <Text style={styles.categoryTitle}>{title}</Text>
-      <Text style={styles.categoryCount}>{count} places</Text>
+      <Text style={styles.categoryCount}>{count || 0} places</Text>
     </View>
     <View style={styles.chevronContainer}>
       <Text style={styles.chevron}>›</Text>
@@ -51,30 +49,14 @@ const ProfileScreen: React.FC = () => {
 
       <View style={styles.categoriesSection}>
         <Text style={styles.sectionTitle}>Categories</Text>
-        <CategoryItem
-          title="Explore"
-          count={7}
-          image={{
-            uri: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800",
-          }}
-          onPress={() => {}}
-        />
-        <CategoryItem
-          title="Adventure"
-          count={5}
-          image={{
-            uri: "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=800",
-          }}
-          onPress={() => {}}
-        />
-        <CategoryItem
-          title="Relax"
-          count={3}
-          image={{
-            uri: "https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?w=800",
-          }}
-          onPress={() => {}}
-        />
+        {categories.map((category) => (
+          <CategoryItem
+            key={category.title}
+            {...category}
+            count={7}
+            onPress={() => {}}
+          />
+        ))}
       </View>
     </SafeAreaView>
   );
