@@ -93,18 +93,34 @@ const HomeScreen = () => {
         </ScrollView>
 
         <View style={styles.listContainer}>
-          {filteredPlaces.map((place) => (
-            <PlaceListItem
-              key={`list-${place.id}`}
-              image={place.image}
-              name={place.name}
-              location={place.location}
-              category={place.category}
-              onExplore={() => handleExplore(place)}
-              isFavorite={place.isFavorite}
-              onFavoritePress={() => handleFavoritePress(place.id)}
-            />
-          ))}
+          {filteredPlaces.length > 0 ? (
+            filteredPlaces.map((place) => (
+              <PlaceListItem
+                key={`list-${place.id}`}
+                image={place.image}
+                name={place.name}
+                location={place.location}
+                category={place.category}
+                onExplore={() => handleExplore(place)}
+                isFavorite={place.isFavorite}
+                onFavoritePress={() => handleFavoritePress(place.id)}
+              />
+            ))
+          ) : (
+            <View style={styles.emptyContainer}>
+              <Text style={styles.emptyText}>
+                {selectedCategory
+                  ? `${selectedCategory} kategorisinde henüz bir yer yok`
+                  : activeTab === "favorites"
+                  ? "Henüz favori yeriniz yok"
+                  : activeTab === "visited"
+                  ? "Henüz ziyaret ettiğiniz bir yer yok"
+                  : activeTab === "toVisit"
+                  ? "Ziyaret etmek istediğiniz bir yer eklemediniz"
+                  : "Henüz bir yer eklenmemiş"}
+              </Text>
+            </View>
+          )}
         </View>
       </ScrollView>
     </View>
@@ -140,10 +156,23 @@ const styles = StyleSheet.create({
   },
   categoriesContainer: {
     paddingHorizontal: 20,
-    marginTop: 15,
+    marginTop: 8,
   },
   listContainer: {
-    marginTop: 30,
+    marginTop: 8,
+  },
+  emptyContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 40,
+    paddingHorizontal: 20,
+  },
+  emptyText: {
+    fontSize: 16,
+    fontFamily: fonts.medium,
+    color: "#666",
+    textAlign: "center",
   },
 });
 
