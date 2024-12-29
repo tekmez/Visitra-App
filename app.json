@@ -16,7 +16,11 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.visitra.app"
+      "bundleIdentifier": "com.visitra.app",
+      "infoPlist": {
+        "NSCameraUsageDescription": "Visitra fotoğraf eklemek için kamera erişimine ihtiyaç duyar.",
+        "NSPhotoLibraryUsageDescription": "Visitra fotoğraf eklemek için galeri erişimine ihtiyaç duyar."
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -26,7 +30,10 @@
       "package": "com.visitra.app",
       "permissions": [
         "ACCESS_COARSE_LOCATION",
-        "ACCESS_FINE_LOCATION"
+        "ACCESS_FINE_LOCATION",
+        "CAMERA",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE"
       ]
     },
     "plugins": [
@@ -34,6 +41,13 @@
         "expo-location",
         {
           "locationAlwaysAndWhenInUsePermission": "Visitra konumunuzu haritada göstermek için konum bilgisine ihtiyaç duyar."
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Visitra fotoğraf eklemek için galeri erişimine ihtiyaç duyar.",
+          "cameraPermission": "Visitra fotoğraf eklemek için kamera erişimine ihtiyaç duyar."
         }
       ]
     ]

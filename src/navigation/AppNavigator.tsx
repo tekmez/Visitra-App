@@ -2,6 +2,7 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 import HomeScreen from "../screens/HomeScreen";
+import AddPlaceScreen from "../screens/AddPlaceScreen";
 
 type RootTabParamList = {
   Home: undefined;
@@ -32,7 +33,6 @@ const AppNavigator = () => {
         tabBarInactiveTintColor: "gray",
         headerShown: false,
         tabBarStyle: {
-          height: 65,
           backgroundColor: "#FFF",
           borderTopColor: "#F0F0F0",
         },
@@ -45,7 +45,7 @@ const AppNavigator = () => {
       />
       <Tab.Screen
         name="Add"
-        component={HomeScreen}
+        component={AddPlaceScreen}
         options={{ tabBarLabel: "Ekle" }}
       />
       <Tab.Screen
