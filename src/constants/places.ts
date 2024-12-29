@@ -33,6 +33,7 @@ export const places: Place[] = [
     status: "toVisit",
     description: "Muhteşem manzaralı plaj evi",
     isVisited: false,
+    notes: "",
     coordinates: {
       latitude: 45.891690,
       longitude: -123.961426
@@ -51,6 +52,7 @@ export const places: Place[] = [
     status: "visited",
     description: "Göl kenarında huzurlu bir kabin",
     isVisited: true,
+    notes: "Geçen yaz gittiğimizde harika bir deneyimdi. Göl kenarında sabah kahvesi içmek paha biçilemezdi. Kış için tekrar rezervasyon yapmalıyım.",
     coordinates: {
       latitude: 39.096848,
       longitude: -120.032349
@@ -69,6 +71,7 @@ export const places: Place[] = [
     status: "favorites",
     description: "Okyanus manzaralı dağ evi",
     isVisited: false,
+    notes: "Pacific Coast Highway üzerinde muhteşem bir lokasyon. Bixby Bridge'e çok yakın. Sonbaharda gitmek için ideal olabilir.",
     coordinates: {
       latitude: 36.270421,
       longitude: -121.807728
@@ -105,6 +108,7 @@ export const places: Place[] = [
     status: "toVisit",
     description: "Ege'nin incisi Santorini'de muhteşem villa",
     isVisited: false,
+    notes: "Caldera manzaralı, Oia'da yer alan villa. Günbatımı için en iyi noktalardan biri. Haziran ayında müsait.",
     coordinates: {
       latitude: 36.393154,
       longitude: 25.461510
@@ -141,6 +145,7 @@ export const places: Place[] = [
     status: "visited",
     description: "Alp Dağları'nın eteklerinde geleneksel chalet",
     isVisited: true,
+    notes: "Zermatt'a 15 dakika mesafede. Kış sporları için ideal. Şömineli ve jakuzili. Aralık ayında tekrar gidebiliriz.",
     coordinates: {
       latitude: 46.619261,
       longitude: 8.045952

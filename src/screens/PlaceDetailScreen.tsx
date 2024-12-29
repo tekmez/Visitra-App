@@ -16,6 +16,7 @@ import { ImagePreviewModal } from "../components/ImagePreviewModal";
 import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../types/navigation";
+import { AddNoteModal } from "../components/AddNoteModal";
 
 type PlaceDetailScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -38,10 +39,19 @@ const PlaceDetailScreen: React.FC<PlaceDetailScreenProps> = ({
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [notes, setNotes] = useState(place.notes || "");
   const [isVisited, setIsVisited] = useState(place.isVisited);
+  const [isAddNoteModalVisible, setIsAddNoteModalVisible] = useState(false);
 
   const handleImagePress = (index: number) => {
     setCurrentImageIndex(index);
     setIsImageModalVisible(true);
+  };
+
+  const handleAddNote = () => {
+    setIsAddNoteModalVisible(true);
+  };
+
+  const handleSaveNote = (note: string) => {
+    setNotes(note);
   };
 
   return (
@@ -61,17 +71,21 @@ const PlaceDetailScreen: React.FC<PlaceDetailScreenProps> = ({
         {/* Image Gallery */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Fotoğraflar</Text>
-          <View style={styles.imageGrid}>
-            {place.images.slice(0, 4).map((image, index) => (
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            style={styles.imageGallery}
+          >
+            {place.images.map((image, index) => (
               <TouchableOpacity
                 key={index}
                 onPress={() => handleImagePress(index)}
-                style={styles.gridImageContainer}
+                style={styles.imageContainer}
               >
-                <Image source={{ uri: image }} style={styles.gridImage} />
+                <Image source={{ uri: image }} style={styles.image} />
               </TouchableOpacity>
             ))}
-          </View>
+          </ScrollView>
         </View>
 
         {/* Description */}
@@ -82,14 +96,28 @@ const PlaceDetailScreen: React.FC<PlaceDetailScreenProps> = ({
 
         {/* Notes */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Notlarım</Text>
-          <TextInput
-            style={styles.notesInput}
-            multiline
-            value={notes}
-            onChangeText={setNotes}
-            placeholder="Notlarınızı buraya ekleyin..."
-          />
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionTitle}>Notlarım</Text>
+            <TouchableOpacity style={styles.addButton} onPress={handleAddNote}>
+              <Ionicons
+                name={notes ? "create" : "add-circle"}
+                size={24}
+                color="#FFB800"
+              />
+            </TouchableOpacity>
+          </View>
+          {notes ? (
+            <View style={styles.noteContent}>
+              <ScrollView
+                style={styles.noteScroll}
+                showsVerticalScrollIndicator={false}
+              >
+                <Text style={styles.description}>{notes}</Text>
+              </ScrollView>
+            </View>
+          ) : (
+            <Text style={styles.emptyNotes}>Henüz not eklenmemiş</Text>
+          )}
         </View>
 
         {/* Map */}
@@ -131,6 +159,13 @@ const PlaceDetailScreen: React.FC<PlaceDetailScreenProps> = ({
           onIndexChange={setCurrentImageIndex}
           onClose={() => setIsImageModalVisible(false)}
         />
+
+        <AddNoteModal
+          visible={isAddNoteModalVisible}
+          onClose={() => setIsAddNoteModalVisible(false)}
+          onSave={handleSaveNote}
+          initialNote={notes}
+        />
       </ScrollView>
     </SafeAreaView>
   );
@@ -160,27 +195,17 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   imageGallery: {
-    height: 250,
-    padding: 16,
+    marginTop: 8,
   },
   imageContainer: {
-    marginRight: 16,
-    borderRadius: 16,
+    marginRight: 12,
+    borderRadius: 12,
     overflow: "hidden",
-    backgroundColor: "#F5F5F5",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
   },
   image: {
     width: 200,
-    height: 250,
-    borderRadius: 16,
+    height: 150,
+    borderRadius: 12,
   },
   section: {
     padding: 16,
@@ -227,22 +252,27 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
   },
-  imageGrid: {
+  sectionHeader: {
     flexDirection: "row",
-    flexWrap: "wrap",
     justifyContent: "space-between",
-    marginTop: 8,
+    alignItems: "center",
+    marginBottom: 8,
   },
-  gridImageContainer: {
-    width: "48%",
-    aspectRatio: 1,
-    marginBottom: 10,
-    borderRadius: 12,
-    overflow: "hidden",
+  addButton: {
+    padding: 4,
   },
-  gridImage: {
-    width: "100%",
-    height: "100%",
+  emptyNotes: {
+    color: "#999",
+    fontSize: 14,
+    fontStyle: "italic",
+  },
+  noteContent: {
+    backgroundColor: "#F8F8F8",
+    padding: 12,
+    borderRadius: 8,
+  },
+  noteScroll: {
+    maxHeight: 150,
   },
 });
 
