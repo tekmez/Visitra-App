@@ -5,24 +5,22 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
-  TextInput,
-  Image,
   SafeAreaView,
-  Platform,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import MapView, { Marker } from "react-native-maps";
-import { ImagePreviewModal } from "../components/ImagePreviewModal";
 import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../types/navigation";
+import { ImagePreviewModal } from "../components/ImagePreviewModal";
 import { AddNoteModal } from "../components/AddNoteModal";
+import { PlaceDetailHeader } from "../components/PlaceDetailHeader";
+import { PlaceImageGallery } from "../components/PlaceImageGallery";
+import { PlaceNotes } from "../components/PlaceNotes";
+import { PlaceMap } from "../components/PlaceMap";
 
 type PlaceDetailScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
   "PlaceDetail"
 >;
-
 type PlaceDetailScreenRouteProp = RouteProp<RootStackParamList, "PlaceDetail">;
 
 interface PlaceDetailScreenProps {
@@ -57,91 +55,25 @@ const PlaceDetailScreen: React.FC<PlaceDetailScreenProps> = ({
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView style={styles.container}>
-        {/* Header */}
-        <View style={styles.header}>
-          <TouchableOpacity
-            onPress={() => navigation.goBack()}
-            style={styles.backButton}
-          >
-            <Ionicons name="arrow-back" size={24} color="#000" />
-          </TouchableOpacity>
-          <Text style={styles.title}>{place.name}</Text>
-        </View>
+        <PlaceDetailHeader
+          title={place.name}
+          onBack={() => navigation.goBack()}
+        />
 
-        {/* Image Gallery */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Fotoğraflar</Text>
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            style={styles.imageGallery}
-          >
-            {place.images.map((image, index) => (
-              <TouchableOpacity
-                key={index}
-                onPress={() => handleImagePress(index)}
-                style={styles.imageContainer}
-              >
-                <Image source={{ uri: image }} style={styles.image} />
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
-        </View>
+        <PlaceImageGallery
+          images={place.images}
+          onImagePress={handleImagePress}
+        />
 
-        {/* Description */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Açıklama</Text>
           <Text style={styles.description}>{place.description}</Text>
         </View>
 
-        {/* Notes */}
-        <View style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>Notlarım</Text>
-            <TouchableOpacity style={styles.addButton} onPress={handleAddNote}>
-              <Ionicons
-                name={notes ? "create" : "add-circle"}
-                size={24}
-                color="#FFB800"
-              />
-            </TouchableOpacity>
-          </View>
-          {notes ? (
-            <View style={styles.noteContent}>
-              <ScrollView
-                style={styles.noteScroll}
-                showsVerticalScrollIndicator={false}
-              >
-                <Text style={styles.description}>{notes}</Text>
-              </ScrollView>
-            </View>
-          ) : (
-            <Text style={styles.emptyNotes}>Henüz not eklenmemiş</Text>
-          )}
-        </View>
+        <PlaceNotes notes={notes} onAddNote={handleAddNote} />
 
-        {/* Map */}
-        <View style={styles.mapContainer}>
-          <Text style={styles.sectionTitle}>Konum</Text>
-          <MapView
-            style={styles.map}
-            initialRegion={{
-              latitude: place.coordinates.latitude,
-              longitude: place.coordinates.longitude,
-              latitudeDelta: 0.01,
-              longitudeDelta: 0.01,
-            }}
-          >
-            <Marker
-              coordinate={{
-                latitude: place.coordinates.latitude,
-                longitude: place.coordinates.longitude,
-              }}
-            />
-          </MapView>
-        </View>
+        <PlaceMap coordinates={place.coordinates} />
 
-        {/* Visit Status Button */}
         <TouchableOpacity
           style={[styles.visitButton, isVisited && styles.visitedButton]}
           onPress={() => setIsVisited(!isVisited)}
@@ -179,69 +111,29 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    padding: 16,
-    paddingTop: Platform.OS === "android" ? 16 : 0,
-    borderBottomWidth: 1,
-    borderBottomColor: "#F0F0F0",
-  },
-  backButton: {
-    marginRight: 16,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-  imageGallery: {
-    marginTop: 8,
-  },
-  imageContainer: {
-    marginRight: 12,
-    borderRadius: 12,
-    overflow: "hidden",
-  },
-  image: {
-    width: 200,
-    height: 150,
-    borderRadius: 12,
-  },
   section: {
-    padding: 16,
+    paddingVertical: 20,
+    paddingHorizontal: 16,
     borderBottomWidth: 1,
     borderBottomColor: "#F0F0F0",
   },
   sectionTitle: {
     fontSize: 18,
     fontWeight: "bold",
-    marginBottom: 8,
+    marginBottom: 12,
+    color: "#333",
   },
   description: {
     fontSize: 16,
     lineHeight: 24,
-  },
-  notesInput: {
-    borderWidth: 1,
-    borderColor: "#E0E0E0",
-    borderRadius: 8,
-    padding: 12,
-    minHeight: 100,
-    textAlignVertical: "top",
-  },
-  mapContainer: {
-    padding: 16,
-  },
-  map: {
-    width: "100%",
-    height: 200,
-    borderRadius: 12,
+    color: "#444",
   },
   visitButton: {
     margin: 16,
+    marginTop: 8,
     padding: 16,
     backgroundColor: "#FFB800",
-    borderRadius: 8,
+    borderRadius: 12,
     alignItems: "center",
   },
   visitedButton: {
@@ -251,28 +143,6 @@ const styles = StyleSheet.create({
     color: "#FFF",
     fontSize: 16,
     fontWeight: "bold",
-  },
-  sectionHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 8,
-  },
-  addButton: {
-    padding: 4,
-  },
-  emptyNotes: {
-    color: "#999",
-    fontSize: 14,
-    fontStyle: "italic",
-  },
-  noteContent: {
-    backgroundColor: "#F8F8F8",
-    padding: 12,
-    borderRadius: 8,
-  },
-  noteScroll: {
-    maxHeight: 150,
   },
 });
 
