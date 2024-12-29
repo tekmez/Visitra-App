@@ -14,7 +14,11 @@ export const placeSchema = z.object({
   category: z.enum(categories, {
     errorMap: () => ({ message: "Kategori seçimi zorunludur" }),
   }),
-  note: z.string().min(1, "Not alanı zorunludur"),
+  description: z.string()
+    .max(150, "Açıklama en fazla 150 karakter olabilir")
+    .optional()
+    .or(z.literal("")),
+  note: z.string().optional(),
 });
 
 export type PlaceFormData = z.infer<typeof placeSchema>; 

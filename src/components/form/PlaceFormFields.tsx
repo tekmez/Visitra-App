@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { View, ScrollView, StyleSheet } from "react-native";
+import { View, ScrollView, StyleSheet, Text } from "react-native";
 import { Control, FieldErrors, Controller } from "react-hook-form";
 import { PlaceFormData } from "../../schema/place";
 import { FormInput, FormLabel, FormError } from "./";
@@ -68,16 +68,21 @@ export const PlaceFormFields: React.FC<PlaceFormFieldsProps> = ({
       />
 
       <View style={styles.inputContainer}>
-        <FormLabel>Not</FormLabel>
+        <View style={styles.labelContainer}>
+          <FormLabel>Açıklama</FormLabel>
+          <Text style={styles.characterCount}>
+            {watch("description")?.length || 0}/150
+          </Text>
+        </View>
         <Controller
           control={control}
-          name="note"
+          name="description"
           render={({ field: { onChange, value } }) => (
             <FormInput
-              hasError={!!errors.note}
+              hasError={!!errors.description}
               value={value}
               onChangeText={onChange}
-              placeholder="Notunuzu giriniz"
+              placeholder="Mekan hakkında açıklama giriniz"
               multiline
               numberOfLines={4}
               textAlignVertical="top"
@@ -85,10 +90,13 @@ export const PlaceFormFields: React.FC<PlaceFormFieldsProps> = ({
               blurOnSubmit={false}
               onFocus={scrollToBottom}
               style={styles.noteInput}
+              maxLength={150}
             />
           )}
         />
-        {errors.note && <FormError>{errors.note.message}</FormError>}
+        {errors.description && (
+          <FormError>{errors.description.message}</FormError>
+        )}
       </View>
     </ScrollView>
   );
@@ -103,6 +111,16 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     marginBottom: 16,
+  },
+  labelContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 8,
+  },
+  characterCount: {
+    fontSize: 12,
+    color: "#666",
   },
   noteInput: {
     height: 100,
