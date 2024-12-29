@@ -13,7 +13,7 @@ type PlaceCardProps = {
   image: { uri: string };
   name: string;
   location: string;
-  type: string;
+  category: string;
   onPress?: () => void;
 };
 
@@ -21,7 +21,7 @@ export const PlaceCard = ({
   image,
   name,
   location,
-  type,
+  category,
   onPress,
 }: PlaceCardProps) => {
   return (
@@ -30,7 +30,7 @@ export const PlaceCard = ({
       <View style={styles.info}>
         <Text style={styles.name}>{name},</Text>
         <Text style={styles.location}>{location}</Text>
-        <Text style={styles.type}>{type}</Text>
+        <Text style={styles.category}>{category}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     marginBottom: 4,
     fontFamily: fonts.regular,
   },
-  type: {
+  category: {
     fontSize: 14,
     color: "#666",
     fontFamily: fonts.regular,

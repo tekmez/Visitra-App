@@ -6,7 +6,7 @@ type PlaceListItemProps = {
   image: { uri: string };
   name: string;
   location: string;
-  type: string;
+  category: string;
   onExplore?: () => void;
 };
 
@@ -14,7 +14,7 @@ export const PlaceListItem = ({
   image,
   name,
   location,
-  type,
+  category,
   onExplore,
 }: PlaceListItemProps) => {
   return (
@@ -25,7 +25,7 @@ export const PlaceListItem = ({
             <Text style={styles.name}>{name}</Text>
             <Text style={styles.location}>, {location}</Text>
           </Text>
-          <Text style={styles.type}>{type}</Text>
+          <Text style={styles.category}>{category}</Text>
           <TouchableOpacity style={styles.exploreButton} onPress={onExplore}>
             <Text style={styles.exploreText}>Explore</Text>
           </TouchableOpacity>
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     fontFamily: fonts.regular,
     color: "#000",
   },
-  type: {
+  category: {
     fontSize: 16,
     color: "#666",
     fontFamily: fonts.regular,

@@ -18,6 +18,8 @@ const HomeScreen = () => {
     return null;
   }
 
+  const filteredPlaces = places.filter((place) => place.status === activeTab);
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -33,25 +35,25 @@ const HomeScreen = () => {
           showsHorizontalScrollIndicator={false}
           style={styles.placesContainer}
         >
-          {places.map((place) => (
+          {filteredPlaces.map((place) => (
             <PlaceCard
               key={`card-${place.id}`}
               image={place.image}
               name={place.name}
               location={place.location}
-              type={place.type}
+              category={place.category}
             />
           ))}
         </ScrollView>
 
         <View style={styles.listContainer}>
-          {places.map((place) => (
+          {filteredPlaces.map((place) => (
             <PlaceListItem
               key={`list-${place.id}`}
               image={place.image}
               name={place.name}
               location={place.location}
-              type={place.type}
+              category={place.category}
               onExplore={() => {}}
             />
           ))}
