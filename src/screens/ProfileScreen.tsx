@@ -1,39 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
   StyleSheet,
   SafeAreaView,
   TouchableOpacity,
-  Image,
 } from "react-native";
 import { colors } from "../theme/colors";
 import { fonts } from "../theme/fonts";
-import { Category, categories } from "../constants/categories";
-
-interface CategoryItemProps extends Category {
-  onPress: () => void;
-}
-
-const CategoryItem: React.FC<CategoryItemProps> = ({
-  title,
-  placeCount,
-  image,
-  onPress,
-}) => (
-  <TouchableOpacity style={styles.categoryItem} onPress={onPress}>
-    <Image source={image} style={styles.categoryImage} />
-    <View style={styles.categoryInfo}>
-      <Text style={styles.categoryTitle}>{title}</Text>
-      <Text style={styles.categoryCount}>{placeCount} places</Text>
-    </View>
-    <View style={styles.chevronContainer}>
-      <Text style={styles.chevron}>›</Text>
-    </View>
-  </TouchableOpacity>
-);
+import { categories } from "../constants/categories";
+import { AntDesign } from "@expo/vector-icons";
+import CategoryItem from "../components/CategoryItem";
+import AddCategoryModal from "../components/AddCategoryModal";
 
 const ProfileScreen: React.FC = () => {
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [newCategoryName, setNewCategoryName] = useState("");
+
+  const handleAddCategory = () => {
+    if (newCategoryName.trim()) {
+      // TODO: Kategori ekleme işlemi burada yapılacak
+      setNewCategoryName("");
+      setIsModalVisible(false);
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -48,11 +39,27 @@ const ProfileScreen: React.FC = () => {
       </View>
 
       <View style={styles.categoriesSection}>
-        <Text style={styles.sectionTitle}>Categories</Text>
+        <View style={styles.categoriesHeader}>
+          <Text style={styles.sectionTitle}>Categories</Text>
+          <TouchableOpacity
+            onPress={() => setIsModalVisible(true)}
+            style={styles.addButton}
+          >
+            <AntDesign name="plus" size={20} color={colors.text.primary} />
+          </TouchableOpacity>
+        </View>
         {categories.map((category) => (
           <CategoryItem key={category.title} {...category} onPress={() => {}} />
         ))}
       </View>
+
+      <AddCategoryModal
+        visible={isModalVisible}
+        onClose={() => setIsModalVisible(false)}
+        onAdd={handleAddCategory}
+        categoryName={newCategoryName}
+        onChangeCategoryName={setNewCategoryName}
+      />
     </SafeAreaView>
   );
 };
@@ -98,41 +105,23 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 20,
   },
+  categoriesHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 20,
+  },
   sectionTitle: {
     fontSize: 24,
     fontFamily: fonts.bold,
-    marginBottom: 20,
   },
-  categoryItem: {
-    flexDirection: "row",
+  addButton: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: colors.secondary,
+    justifyContent: "center",
     alignItems: "center",
-    marginBottom: 15,
-  },
-  categoryImage: {
-    width: 60,
-    height: 60,
-    borderRadius: 12,
-  },
-  categoryInfo: {
-    flex: 1,
-    marginLeft: 15,
-  },
-  categoryTitle: {
-    fontSize: 18,
-    fontFamily: fonts.semiBold,
-  },
-  categoryCount: {
-    fontSize: 14,
-    fontFamily: fonts.regular,
-    color: colors.text.secondary,
-    marginTop: 4,
-  },
-  chevronContainer: {
-    paddingHorizontal: 10,
-  },
-  chevron: {
-    fontSize: 24,
-    color: colors.text.secondary,
   },
 });
 
