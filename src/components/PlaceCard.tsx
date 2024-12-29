@@ -60,9 +60,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
+    borderWidth: 2,
+    borderColor: "transparent",
   },
   selectedCard: {
-    borderWidth: 2,
     borderColor: "#FFB800",
   },
   image: {
