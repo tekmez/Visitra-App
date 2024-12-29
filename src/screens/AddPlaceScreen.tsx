@@ -27,11 +27,11 @@ const AddPlaceScreen: React.FC = () => {
   } = useForm<PlaceFormData>({
     resolver: zodResolver(placeSchema),
     defaultValues: {
-      image: null,
+      name: "",
+      images: [],
       location: null,
       category: undefined,
       note: "",
-      name: "",
     },
   });
 
@@ -63,8 +63,9 @@ const AddPlaceScreen: React.FC = () => {
         keyboardShouldPersistTaps="handled"
       >
         <ImagePicker
-          selectedImage={watch("image")}
-          onImageSelect={(uri) => setValue("image", uri)}
+          selectedImages={watch("images")}
+          onImagesSelect={(images) => setValue("images", images)}
+          error={errors.images?.message}
         />
 
         <View style={styles.inputContainer}>

@@ -4,7 +4,7 @@ export const categories = ["Restoran", "Kafe", "Park", "Müze", "Alışveriş"] 
 
 export const placeSchema = z.object({
   name: z.string().min(1, "Mekan adı zorunludur"),
-  image: z.string().nullable(),
+  images: z.array(z.string()).min(1, "En az bir fotoğraf eklenmelidir"),
   location: z
     .object({
       latitude: z.number(),
