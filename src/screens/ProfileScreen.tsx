@@ -17,7 +17,7 @@ interface CategoryItemProps extends Category {
 
 const CategoryItem: React.FC<CategoryItemProps> = ({
   title,
-  count,
+  placeCount,
   image,
   onPress,
 }) => (
@@ -25,7 +25,7 @@ const CategoryItem: React.FC<CategoryItemProps> = ({
     <Image source={image} style={styles.categoryImage} />
     <View style={styles.categoryInfo}>
       <Text style={styles.categoryTitle}>{title}</Text>
-      <Text style={styles.categoryCount}>{count || 0} places</Text>
+      <Text style={styles.categoryCount}>{placeCount} places</Text>
     </View>
     <View style={styles.chevronContainer}>
       <Text style={styles.chevron}>›</Text>
@@ -50,12 +50,7 @@ const ProfileScreen: React.FC = () => {
       <View style={styles.categoriesSection}>
         <Text style={styles.sectionTitle}>Categories</Text>
         {categories.map((category) => (
-          <CategoryItem
-            key={category.title}
-            {...category}
-            count={7}
-            onPress={() => {}}
-          />
+          <CategoryItem key={category.title} {...category} onPress={() => {}} />
         ))}
       </View>
     </SafeAreaView>
