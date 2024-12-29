@@ -10,11 +10,11 @@ import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../types/navigation";
 
-type TabType = "date" | "favorites" | "toVisit" | "visited";
+type TabType = "places" | "favorites" | "toVisit" | "visited";
 type NavigationProp = StackNavigationProp<RootStackParamList>;
 
 const HomeScreen = () => {
-  const [activeTab, setActiveTab] = useState<TabType>("date");
+  const [activeTab, setActiveTab] = useState<TabType>("places");
   const [places, setPlaces] = useState<Place[]>(initialPlaces);
   const navigation = useNavigation<NavigationProp>();
 
@@ -25,8 +25,10 @@ const HomeScreen = () => {
   }
 
   const filteredPlaces =
-    activeTab === "date"
+    activeTab === "places"
       ? places
+      : activeTab === "favorites"
+      ? places.filter((place) => place.isFavorite)
       : places.filter((place) => place.status === activeTab);
 
   const handleExplore = (place: Place) => {
@@ -39,7 +41,7 @@ const HomeScreen = () => {
         if (place.id === placeId) {
           return {
             ...place,
-            status: place.status === "favorites" ? "date" : "favorites",
+            isFavorite: !place.isFavorite,
           };
         }
         return place;
@@ -82,7 +84,7 @@ const HomeScreen = () => {
               location={place.location}
               category={place.category}
               onExplore={() => handleExplore(place)}
-              isFavorite={place.status === "favorites"}
+              isFavorite={place.isFavorite}
               onFavoritePress={() => handleFavoritePress(place.id)}
             />
           ))}

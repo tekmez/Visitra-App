@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { fonts } from "../theme/fonts";
 
-type TabType = "date" | "favorites" | "toVisit" | "visited";
+type TabType = "places" | "favorites" | "toVisit" | "visited";
 
 type TabBarProps = {
   activeTab: TabType;
@@ -36,7 +36,7 @@ export const TabBar = ({ activeTab, onTabChange }: TabBarProps) => {
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.container}
       >
-        {renderTab("Places", "date")}
+        {renderTab("Places", "places")}
         {renderTab("Favorites", "favorites")}
         {renderTab("To visit", "toVisit")}
         {renderTab("Visited", "visited")}

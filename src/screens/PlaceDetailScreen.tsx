@@ -36,7 +36,7 @@ const PlaceDetailScreen: React.FC<PlaceDetailScreenProps> = ({
   const [isImageModalVisible, setIsImageModalVisible] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [notes, setNotes] = useState(place.notes || "");
-  const [isVisited, setIsVisited] = useState(place.isVisited);
+  const [status, setStatus] = useState(place.status);
   const [isAddNoteModalVisible, setIsAddNoteModalVisible] = useState(false);
 
   const handleImagePress = (index: number) => {
@@ -50,6 +50,10 @@ const PlaceDetailScreen: React.FC<PlaceDetailScreenProps> = ({
 
   const handleSaveNote = (note: string) => {
     setNotes(note);
+  };
+
+  const toggleVisited = () => {
+    setStatus(status === "visited" ? "toVisit" : "visited");
   };
 
   return (
@@ -75,11 +79,14 @@ const PlaceDetailScreen: React.FC<PlaceDetailScreenProps> = ({
         <PlaceMap coordinates={place.coordinates} />
 
         <TouchableOpacity
-          style={[styles.visitButton, isVisited && styles.visitedButton]}
-          onPress={() => setIsVisited(!isVisited)}
+          style={[
+            styles.visitButton,
+            status === "visited" && styles.visitedButton,
+          ]}
+          onPress={toggleVisited}
         >
           <Text style={styles.visitButtonText}>
-            {isVisited ? "Gidildi ✓" : "Gidildi Olarak İşaretle"}
+            {status === "visited" ? "Gidildi ✓" : "Gidildi Olarak İşaretle"}
           </Text>
         </TouchableOpacity>
 
