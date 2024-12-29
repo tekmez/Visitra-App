@@ -36,7 +36,7 @@ export const TabBar = ({ activeTab, onTabChange }: TabBarProps) => {
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.container}
       >
-        {renderTab("Date added", "date")}
+        {renderTab("Places", "date")}
         {renderTab("Favorites", "favorites")}
         {renderTab("To visit", "toVisit")}
         {renderTab("Visited", "visited")}

@@ -18,7 +18,10 @@ const HomeScreen = () => {
     return null;
   }
 
-  const filteredPlaces = places.filter((place) => place.status === activeTab);
+  const filteredPlaces =
+    activeTab === "date"
+      ? places
+      : places.filter((place) => place.status === activeTab);
 
   return (
     <View style={styles.container}>
