@@ -1,6 +1,20 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import React, { useState, useRef } from "react";
+import { View, Text, StyleSheet, Dimensions } from "react-native";
 import { useFonts } from "expo-font";
+import {
+  GestureHandlerRootView,
+  Gesture,
+  GestureDetector,
+  ScrollView,
+} from "react-native-gesture-handler";
+import Animated, {
+  useAnimatedStyle,
+  withSpring,
+  useSharedValue,
+  runOnJS,
+  withTiming,
+  Easing,
+} from "react-native-reanimated";
 import { PlaceCard } from "../components/PlaceCard";
 import { PlaceListItem } from "../components/PlaceListItem";
 import { TabBar } from "../components/TabBar";
@@ -14,13 +28,85 @@ import { RootStackParamList } from "../types/navigation";
 type TabType = "places" | "favorites" | "toVisit" | "visited";
 type NavigationProp = StackNavigationProp<RootStackParamList>;
 
+const SPRING_CONFIG = {
+  damping: 15,
+  mass: 0.8,
+  stiffness: 120,
+};
+
+const TIMING_CONFIG = {
+  duration: 400,
+  easing: Easing.bezier(0.25, 0.1, 0.25, 1),
+};
+
 const HomeScreen = () => {
   const [activeTab, setActiveTab] = useState<TabType>("places");
   const [places, setPlaces] = useState<Place[]>(initialPlaces);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const navigation = useNavigation<NavigationProp>();
+  const translateX = useSharedValue(0);
+  const isScrolling = useSharedValue(false);
+  const screenWidth = Dimensions.get("window").width;
+  const mainScrollRef = useRef(null);
 
   let [fontsLoaded] = useFonts(fontConfig);
+
+  const tabs: TabType[] = ["places", "favorites", "toVisit", "visited"];
+
+  const panGesture = Gesture.Pan()
+    .minDistance(10)
+    .onStart(() => {
+      isScrolling.value = false;
+    })
+    .onUpdate((event) => {
+      if (isScrolling.value) return;
+
+      const currentTabIndex = tabs.indexOf(activeTab);
+      const isFirstTab = currentTabIndex === 0;
+      const isLastTab = currentTabIndex === tabs.length - 1;
+
+      let newTranslateX = event.translationX;
+
+      if (
+        (isFirstTab && newTranslateX > 0) ||
+        (isLastTab && newTranslateX < 0)
+      ) {
+        newTranslateX = newTranslateX * 0.2;
+      }
+
+      translateX.value = newTranslateX;
+    })
+    .onEnd((event) => {
+      if (isScrolling.value) return;
+
+      const currentTabIndex = tabs.indexOf(activeTab);
+      const velocity = event.velocityX;
+      const translation = event.translationX;
+
+      const shouldSwitch = Math.abs(translation) > screenWidth * 0.2;
+
+      if (shouldSwitch) {
+        if (translation > 0 && currentTabIndex > 0) {
+          translateX.value = withTiming(screenWidth, TIMING_CONFIG, () => {
+            runOnJS(setActiveTab)(tabs[currentTabIndex - 1]);
+            translateX.value = withTiming(0, { duration: 0 });
+          });
+        } else if (translation < 0 && currentTabIndex < tabs.length - 1) {
+          translateX.value = withTiming(-screenWidth, TIMING_CONFIG, () => {
+            runOnJS(setActiveTab)(tabs[currentTabIndex + 1]);
+            translateX.value = withTiming(0, { duration: 0 });
+          });
+        } else {
+          translateX.value = withSpring(0, SPRING_CONFIG);
+        }
+      } else {
+        translateX.value = withSpring(0, SPRING_CONFIG);
+      }
+    });
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ translateX: translateX.value }],
+  }));
 
   if (!fontsLoaded) {
     return null;
@@ -66,64 +152,82 @@ const HomeScreen = () => {
     setSelectedCategory(selectedCategory === category ? null : category);
   };
 
+  const renderContent = () => (
+    <ScrollView
+      ref={mainScrollRef}
+      showsVerticalScrollIndicator={false}
+      onScrollBeginDrag={() => {
+        isScrolling.value = true;
+      }}
+      scrollEventThrottle={16}
+    >
+      <Text style={styles.sectionTitle}>Categories</Text>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        style={styles.categoriesContainer}
+        onScrollBeginDrag={() => {
+          isScrolling.value = true;
+        }}
+      >
+        {categories.map((category) => (
+          <PlaceCard
+            key={category.title}
+            image={category.image}
+            name={category.title}
+            isSelected={selectedCategory === category.title}
+            onPress={() => handleCategoryPress(category.title)}
+          />
+        ))}
+      </ScrollView>
+
+      <View style={styles.listContainer}>
+        {filteredPlaces.length > 0 ? (
+          filteredPlaces.map((place) => (
+            <PlaceListItem
+              key={`list-${place.id}`}
+              image={place.image}
+              name={place.name}
+              location={place.location}
+              category={place.category}
+              onExplore={() => handleExplore(place)}
+              isFavorite={place.isFavorite}
+              onFavoritePress={() => handleFavoritePress(place.id)}
+            />
+          ))
+        ) : (
+          <View style={styles.emptyContainer}>
+            <Text style={styles.emptyText}>
+              {selectedCategory
+                ? `${selectedCategory} kategorisinde henüz bir yer yok`
+                : activeTab === "favorites"
+                ? "Henüz favori yeriniz yok"
+                : activeTab === "visited"
+                ? "Henüz ziyaret ettiğiniz bir yer yok"
+                : activeTab === "toVisit"
+                ? "Ziyaret etmek istediğiniz bir yer eklemediniz"
+                : "Henüz bir yer eklenmemiş"}
+            </Text>
+          </View>
+        )}
+      </View>
+    </ScrollView>
+  );
+
   return (
-    <View style={styles.container}>
+    <GestureHandlerRootView style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Visitra</Text>
       </View>
 
       <TabBar activeTab={activeTab} onTabChange={setActiveTab} />
 
-      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        <Text style={styles.sectionTitle}>Categories</Text>
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          style={styles.categoriesContainer}
-        >
-          {categories.map((category) => (
-            <PlaceCard
-              key={category.title}
-              image={category.image}
-              name={category.title}
-              isSelected={selectedCategory === category.title}
-              onPress={() => handleCategoryPress(category.title)}
-            />
-          ))}
-        </ScrollView>
-
-        <View style={styles.listContainer}>
-          {filteredPlaces.length > 0 ? (
-            filteredPlaces.map((place) => (
-              <PlaceListItem
-                key={`list-${place.id}`}
-                image={place.image}
-                name={place.name}
-                location={place.location}
-                category={place.category}
-                onExplore={() => handleExplore(place)}
-                isFavorite={place.isFavorite}
-                onFavoritePress={() => handleFavoritePress(place.id)}
-              />
-            ))
-          ) : (
-            <View style={styles.emptyContainer}>
-              <Text style={styles.emptyText}>
-                {selectedCategory
-                  ? `${selectedCategory} kategorisinde henüz bir yer yok`
-                  : activeTab === "favorites"
-                  ? "Henüz favori yeriniz yok"
-                  : activeTab === "visited"
-                  ? "Henüz ziyaret ettiğiniz bir yer yok"
-                  : activeTab === "toVisit"
-                  ? "Ziyaret etmek istediğiniz bir yer eklemediniz"
-                  : "Henüz bir yer eklenmemiş"}
-              </Text>
-            </View>
-          )}
-        </View>
-      </ScrollView>
-    </View>
+      <GestureDetector gesture={panGesture}>
+        <Animated.View style={[styles.content, animatedStyle]}>
+          {renderContent()}
+        </Animated.View>
+      </GestureDetector>
+    </GestureHandlerRootView>
   );
 };
 
