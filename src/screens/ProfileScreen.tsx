@@ -12,10 +12,19 @@ import { categories } from "../constants/categories";
 import { AntDesign } from "@expo/vector-icons";
 import CategoryItem from "../components/CategoryItem";
 import AddCategoryModal from "../components/AddCategoryModal";
+import ReanimatedSwipeable from "react-native-gesture-handler/ReanimatedSwipeable";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import Reanimated, {
+  SharedValue,
+  useAnimatedStyle,
+} from "react-native-reanimated";
+import DeleteCategoryModal from "@/components/DeleteCategoryModal";
 
 const ProfileScreen: React.FC = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [newCategoryName, setNewCategoryName] = useState("");
+  const [categoriesList, setCategoriesList] = useState(categories);
 
   const handleAddCategory = () => {
     if (newCategoryName.trim()) {
@@ -25,41 +34,76 @@ const ProfileScreen: React.FC = () => {
     }
   };
 
+  function RightAction(prog: SharedValue<number>, drag: SharedValue<number>) {
+    const styleAnimation = useAnimatedStyle(() => {
+      return {
+        transform: [{ translateX: drag.value + 50 }],
+        justifyContent: "center",
+        alignItems: "center",
+      };
+    });
+
+    return (
+      <Reanimated.View style={styleAnimation}>
+        <TouchableOpacity
+          style={styles.deleteButton}
+          onPress={() => setIsDeleteModalVisible(true)}
+        >
+          <AntDesign name="delete" size={24} color={"red"} />
+        </TouchableOpacity>
+      </Reanimated.View>
+    );
+  }
+
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>Profile & Settings</Text>
-      </View>
+      <GestureHandlerRootView>
+        <View style={styles.header}>
+          <Text style={styles.headerTitle}>Profile & Settings</Text>
+        </View>
 
-      <View style={styles.themeSection}>
-        <Text style={styles.themeText}>Theme</Text>
-        <TouchableOpacity style={styles.systemButton}>
-          <Text style={styles.systemButtonText}>System</Text>
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.categoriesSection}>
-        <View style={styles.categoriesHeader}>
-          <Text style={styles.sectionTitle}>Categories</Text>
-          <TouchableOpacity
-            onPress={() => setIsModalVisible(true)}
-            style={styles.addButton}
-          >
-            <AntDesign name="plus" size={20} color={colors.text.primary} />
+        <View style={styles.themeSection}>
+          <Text style={styles.themeText}>Theme</Text>
+          <TouchableOpacity style={styles.systemButton}>
+            <Text style={styles.systemButtonText}>System</Text>
           </TouchableOpacity>
         </View>
-        {categories.map((category) => (
-          <CategoryItem key={category.title} {...category} onPress={() => {}} />
-        ))}
-      </View>
 
-      <AddCategoryModal
-        visible={isModalVisible}
-        onClose={() => setIsModalVisible(false)}
-        onAdd={handleAddCategory}
-        categoryName={newCategoryName}
-        onChangeCategoryName={setNewCategoryName}
-      />
+        <View style={styles.categoriesSection}>
+          <View style={styles.categoriesHeader}>
+            <Text style={styles.sectionTitle}>Categories</Text>
+            <TouchableOpacity
+              onPress={() => setIsModalVisible(true)}
+              style={styles.addButton}
+            >
+              <AntDesign name="plus" size={20} color={"white"} />
+            </TouchableOpacity>
+          </View>
+          {categoriesList.map((category) => (
+            <ReanimatedSwipeable
+              key={category.title}
+              renderRightActions={RightAction}
+              friction={2}
+              enableTrackpadTwoFingerGesture
+            >
+              <CategoryItem {...category} onPress={() => {}} />
+            </ReanimatedSwipeable>
+          ))}
+        </View>
+
+        <AddCategoryModal
+          visible={isModalVisible}
+          onClose={() => setIsModalVisible(false)}
+          onAdd={handleAddCategory}
+          categoryName={newCategoryName}
+          onChangeCategoryName={setNewCategoryName}
+        />
+        <DeleteCategoryModal
+          visible={isDeleteModalVisible}
+          onClose={() => setIsDeleteModalVisible(false)}
+          categoryTitle={"test"}
+        />
+      </GestureHandlerRootView>
     </SafeAreaView>
   );
 };
@@ -68,6 +112,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.background.primary,
+    paddingBottom: 20,
   },
   header: {
     flexDirection: "row",
@@ -122,6 +167,15 @@ const styles = StyleSheet.create({
     backgroundColor: colors.secondary,
     justifyContent: "center",
     alignItems: "center",
+  },
+  deleteButton: {
+    width: 50,
+    height: 50,
+    borderRadius: 12,
+    justifyContent: "center",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: colors.border.primary,
   },
 });
 

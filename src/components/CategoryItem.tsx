@@ -20,9 +20,6 @@ const CategoryItem: React.FC<CategoryItemProps> = ({
       <Text style={styles.categoryTitle}>{title}</Text>
       <Text style={styles.categoryCount}>{placeCount} places</Text>
     </View>
-    <View style={styles.chevronContainer}>
-      <Text style={styles.chevron}>›</Text>
-    </View>
   </TouchableOpacity>
 );
 
@@ -50,13 +47,6 @@ const styles = StyleSheet.create({
     fontFamily: fonts.regular,
     color: colors.text.secondary,
     marginTop: 4,
-  },
-  chevronContainer: {
-    paddingHorizontal: 10,
-  },
-  chevron: {
-    fontSize: 24,
-    color: colors.text.secondary,
   },
 });
 
