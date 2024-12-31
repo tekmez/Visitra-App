@@ -15,7 +15,7 @@ export const useAddPlaceForm = () => {
       name: "",
       images: [],
       location: null,
-      category: undefined,
+      category: "",
       description: "",
       note: "",
     },

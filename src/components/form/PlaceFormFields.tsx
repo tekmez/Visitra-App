@@ -40,7 +40,12 @@ export const PlaceFormFields: React.FC<PlaceFormFieldsProps> = ({
       />
 
       <View style={styles.inputContainer}>
-        <FormLabel>Mekan Adı</FormLabel>
+        <View style={styles.labelContainer}>
+          <FormLabel>Mekan Adı</FormLabel>
+          <Text style={styles.characterCount}>
+            {watch("name")?.length || 0}/25
+          </Text>
+        </View>
         <Controller
           control={control}
           name="name"
@@ -50,10 +55,14 @@ export const PlaceFormFields: React.FC<PlaceFormFieldsProps> = ({
               value={value}
               onChangeText={onChange}
               placeholder="Mekan adını giriniz"
+              maxLength={25}
             />
           )}
         />
         {errors.name && <FormError>{errors.name.message}</FormError>}
+        {watch("name")?.length > 25 && (
+          <FormError>Mekan adı en fazla 25 karakter olmalıdır.</FormError>
+        )}
       </View>
 
       <LocationPicker
@@ -87,7 +96,6 @@ export const PlaceFormFields: React.FC<PlaceFormFieldsProps> = ({
               numberOfLines={4}
               textAlignVertical="top"
               returnKeyType="default"
-              blurOnSubmit={false}
               onFocus={scrollToBottom}
               style={styles.noteInput}
               maxLength={150}

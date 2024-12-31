@@ -8,12 +8,12 @@ import {
 } from "react-native";
 import { fonts } from "../theme/fonts";
 import { colors } from "../theme/colors";
-import { categories, Category } from "../constants/categories";
+import { categories } from "../constants/categories";
 import { Label, ErrorText } from "./common";
 
 interface CategoryPickerProps {
-  selectedCategory: Category | undefined;
-  onCategorySelect: (category: Category) => void;
+  selectedCategory: string | undefined;
+  onCategorySelect: (category: string) => void;
   error?: string;
 }
 
@@ -31,16 +31,16 @@ export const CategoryPicker: React.FC<CategoryPickerProps> = ({
             key={cat.title}
             style={[
               styles.categoryButton,
-              selectedCategory?.title === cat.title &&
-                styles.categoryButtonSelected,
+              selectedCategory === cat.title && styles.categoryButtonSelected,
             ]}
-            onPress={() => onCategorySelect(cat)}
+            onPress={() => {
+              onCategorySelect(cat.title);
+            }}
           >
             <Text
               style={[
                 styles.categoryText,
-                selectedCategory?.title === cat.title &&
-                  styles.categoryTextSelected,
+                selectedCategory === cat.title && styles.categoryTextSelected,
               ]}
             >
               {cat.title}
@@ -52,7 +52,6 @@ export const CategoryPicker: React.FC<CategoryPickerProps> = ({
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     marginBottom: 16,
