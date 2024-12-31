@@ -1,76 +1,41 @@
-# Visitra - Seyahat Planlama ve Takip Uygulaması
+# Visitra - Travel Planning and Tracking Application
 
-## Proje Hakkında
-Visitra, kullanıcıların seyahat planlarını yönetmelerine ve deneyimlerini kaydetmelerine olanak sağlayan bir mobil uygulamadır. Kullanıcılar:
-- Seyahat etmek istedikleri yerleri kaydedebilir
-- Lokasyonları kategorilere ayırabilir
-- Notlar ekleyebilir
-- Ziyaret ettikleri yerleri işaretleyebilir
-- Çeşitli filtreleme seçenekleriyle yerlerini yönetebilir
+## Project Overview
+Visitra is a mobile application that allows users to manage their travel plans and record their experiences. Users can:
+- Save the places they want to travel to
+- Categorize locations
+- Add new categories
+- Add notes
+- Mark the places they have visited
+- Manage their places with various filtering options
 
-## Teknolojik Altyapı
+## Technological Infrastructure
 
-### Temel Teknolojiler
+### Core Technologies
 - React Native
 - Expo SDK 52
 - TypeScript
-
-### Veritabanı ve Depolama
-- Firebase (Authentication, Firestore, Storage)
-- AsyncStorage (Yerel depolama)
-
-### Harita ve Konum Servisleri
-- React Native Maps
-- Expo Location
-
-### UI Kütüphaneleri
-- React Native Paper (Material Design)
-- React Native Vector Icons
 - React Native Reanimated
-
-### Navigasyon
+- React Native Maps
 - React Navigation v7
-
-### State Yönetimi
 - Redux Toolkit
 
-### Diğer Önemli Paketler
-- expo-image-picker
-- expo-notifications
-- react-native-gesture-handler
-- @react-native-community/netinfo
+## Installation
 
-## Kurulum
-
-1. Gerekli bağımlılıkları yükleyin:
+1. Install the required dependencies:
 ```bash
 yarn install
 ```
 
-2. Expo CLI'yi yükleyin:
+2. Install Expo CLI:
 ```bash
 yarn global add expo-cli
 ```
 
-3. Uygulamayı başlatın:
+3. Start the application:
 ```bash
 yarn expo start
 ```
 
-## Proje Yapısı
-
-```
-src/
-├── assets/         # Resimler, fontlar ve diğer statik dosyalar
-├── components/     # Yeniden kullanılabilir UI bileşenleri
-├── screens/        # Uygulama ekranları
-├── navigation/     # Navigasyon yapılandırması
-├── services/       # API ve Firebase servisleri
-├── store/         # Redux store ve slice'lar
-├── hooks/         # Özel React hooks'ları
-├── utils/         # Yardımcı fonksiyonlar
-└── types/         # TypeScript tip tanımlamaları
-```
-
-## Lisans
-Bu proje MIT lisansı altında lisanslanmıştır. 
+## License
+This project is licensed under the MIT license. 
