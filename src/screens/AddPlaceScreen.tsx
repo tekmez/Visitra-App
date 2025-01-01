@@ -14,10 +14,7 @@ const AddPlaceScreen: React.FC = () => {
     <SafeAreaView
       style={[styles.safeArea, { backgroundColor: colors.background.primary }]}
     >
-      <PlaceFormHeader
-        title="Yeni Mekan Ekle"
-        onSave={handleSubmit(onSubmit)}
-      />
+      <PlaceFormHeader title="Add New Place" onSave={handleSubmit(onSubmit)} />
       <PlaceFormFields
         control={control}
         errors={errors}

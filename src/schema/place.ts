@@ -1,17 +1,18 @@
 import { z } from "zod";
 
 export const placeSchema = z.object({
-  name: z.string().min(1, "Mekan adı zorunludur"),
-  images: z.array(z.string()).min(1, "En az bir fotoğraf eklenmelidir"),
+  name: z.string().min(1, "Place name is required"),
+  images: z.array(z.string()).min(1, "At least one image must be added"),
   location: z
     .object({
       latitude: z.number(),
       longitude: z.number(),
     })
     .nullable(),
-  category: z.string().min(1, "Kategori seçimi zorunludur"),
-  description: z.string()
-    .max(150, "Açıklama en fazla 150 karakter olabilir")
+  category: z.string().min(1, "Category selection is required"),
+  description: z
+    .string()
+    .max(150, "Description must be at most 150 characters")
     .optional()
     .or(z.literal("")),
   note: z.string().optional(),

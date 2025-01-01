@@ -49,7 +49,7 @@ export const ImagePicker: React.FC<ImagePickerProps> = ({
   const pickImage = async () => {
     try {
       if (selectedImages.length >= MAX_IMAGES) {
-        Alert.alert("Limit Aşıldı", "En fazla 4 fotoğraf ekleyebilirsiniz.");
+        Alert.alert("Limit Exceeded", "You can only add up to 4 images.");
         return;
       }
 
@@ -58,8 +58,8 @@ export const ImagePicker: React.FC<ImagePickerProps> = ({
 
       if (status !== "granted") {
         Alert.alert(
-          "İzin Gerekli",
-          "Fotoğraf seçmek için galeri erişim izni gerekiyor."
+          "Permission Required",
+          "Gallery access permission is required to select images."
         );
         return;
       }
@@ -80,8 +80,8 @@ export const ImagePicker: React.FC<ImagePickerProps> = ({
         onImagesSelect([...selectedImages, ...newUris]);
       }
     } catch (error) {
-      Alert.alert("Hata", "Fotoğraf seçilirken bir hata oluştu");
-      console.error("Fotoğraf seçme hatası:", error);
+      Alert.alert("Error", "An error occurred while selecting images");
+      console.error("Image selection error:", error);
     }
   };
 
@@ -136,7 +136,7 @@ export const ImagePicker: React.FC<ImagePickerProps> = ({
             <Text
               style={[styles.addButtonLabel, { color: colors.text.secondary }]}
             >
-              Fotoğraf Ekle ({selectedImages.length}/{MAX_IMAGES})
+              Add Image ({selectedImages.length}/{MAX_IMAGES})
             </Text>
           </TouchableOpacity>
         )}

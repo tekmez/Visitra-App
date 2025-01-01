@@ -43,12 +43,12 @@ const TabNavigator = () => {
       <Tab.Screen
         name="Home"
         component={HomeScreen}
-        options={{ tabBarLabel: "Ana Sayfa" }}
+        options={{ tabBarLabel: "Home" }}
       />
       <Tab.Screen
         name="Add"
         component={AddPlaceScreen}
-        options={{ tabBarLabel: "Ekle" }}
+        options={{ tabBarLabel: "Add" }}
       />
       <Tab.Screen
         name="Settings"

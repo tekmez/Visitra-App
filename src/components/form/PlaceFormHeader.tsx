@@ -34,7 +34,7 @@ export const PlaceFormHeader: React.FC<PlaceFormHeaderProps> = ({
         <Text
           style={[styles.headerSaveButtonText, { color: colors.text.primary }]}
         >
-          Kaydet
+          Save
         </Text>
       </TouchableOpacity>
     </View>

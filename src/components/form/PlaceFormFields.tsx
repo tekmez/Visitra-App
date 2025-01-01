@@ -56,7 +56,7 @@ export const PlaceFormFields: React.FC<PlaceFormFieldsProps> = ({
 
         <View style={styles.inputContainer}>
           <View style={styles.labelContainer}>
-            <FormLabel>Mekan Adı</FormLabel>
+            <FormLabel>Place Name</FormLabel>
             <Text style={styles.characterCount}>
               {watch("name")?.length || 0}/25
             </Text>
@@ -69,14 +69,14 @@ export const PlaceFormFields: React.FC<PlaceFormFieldsProps> = ({
                 hasError={!!errors.name}
                 value={value}
                 onChangeText={onChange}
-                placeholder="Mekan adını giriniz"
+                placeholder="Enter a place name"
                 maxLength={25}
               />
             )}
           />
           {errors.name && <FormError>{errors.name.message}</FormError>}
           {watch("name")?.length > 25 && (
-            <FormError>Mekan adı en fazla 25 karakter olmalıdır.</FormError>
+            <FormError>The place name must be at most 25 characters.</FormError>
           )}
         </View>
 
@@ -93,7 +93,7 @@ export const PlaceFormFields: React.FC<PlaceFormFieldsProps> = ({
 
         <View style={styles.inputContainer}>
           <View style={styles.labelContainer}>
-            <FormLabel>Açıklama</FormLabel>
+            <FormLabel>Description</FormLabel>
             <Text style={styles.characterCount}>
               {watch("description")?.length || 0}/150
             </Text>
@@ -106,7 +106,7 @@ export const PlaceFormFields: React.FC<PlaceFormFieldsProps> = ({
                 hasError={!!errors.description}
                 value={value}
                 onChangeText={onChange}
-                placeholder="Mekan hakkında açıklama giriniz"
+                placeholder="Enter a description for the place"
                 multiline
                 numberOfLines={4}
                 textAlignVertical="top"

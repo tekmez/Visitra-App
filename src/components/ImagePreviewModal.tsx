@@ -72,27 +72,14 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
       <View style={styles.overlay}>
         <SafeAreaView style={styles.container}>
           <View style={styles.header}>
-            <Text
-              style={[
-                styles.pageIndicator,
-                { color: colors.background.primary },
-              ]}
-            >
+            <Text style={[styles.pageIndicator, { color: "white" }]}>
               {currentIndex + 1} / {images.length}
             </Text>
             <TouchableOpacity
-              style={[
-                styles.closeButton,
-                { backgroundColor: colors.background.secondary },
-              ]}
+              style={[styles.closeButton, { backgroundColor: "grey" }]}
               onPress={onClose}
             >
-              <Text
-                style={[
-                  styles.closeButtonText,
-                  { color: colors.text.secondary },
-                ]}
-              >
+              <Text style={[styles.closeButtonText, { color: "white" }]}>
                 ✕
               </Text>
             </TouchableOpacity>

@@ -91,15 +91,19 @@ const PlaceDetailScreen: React.FC<PlaceDetailScreenProps> = ({
         <TouchableOpacity
           style={[
             styles.visitButton,
-            status === "visited" && styles.visitedButton,
             { backgroundColor: colors.secondary },
+            status === "visited" && { backgroundColor: "#4CAF50" },
           ]}
           onPress={toggleVisited}
         >
           <Text
-            style={[styles.visitButtonText, { color: colors.text.primary }]}
+            style={[
+              styles.visitButtonText,
+              { color: colors.text.primary },
+              status === "visited" && { color: "white" },
+            ]}
           >
-            {status === "visited" ? "Gidildi ✓" : "Gidildi Olarak İşaretle"}
+            {status === "visited" ? "✓" : "Mark as Visited"}
           </Text>
         </TouchableOpacity>
 

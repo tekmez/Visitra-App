@@ -40,5 +40,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: fonts.regular,
     borderWidth: 1,
+    lineHeight: 20,
   },
 });

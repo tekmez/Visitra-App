@@ -26,7 +26,7 @@ export const CategoryPicker: React.FC<CategoryPickerProps> = ({
 
   return (
     <View style={styles.container}>
-      <Label>Kategori</Label>
+      <Label>Category</Label>
       <ScrollView horizontal>
         {categories.map((cat) => (
           <TouchableOpacity

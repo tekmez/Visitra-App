@@ -20,6 +20,5 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 16,
     fontFamily: fonts.medium,
-    marginBottom: 8,
   },
 });

@@ -42,7 +42,7 @@ const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
           ]}
         >
           <Text style={[styles.modalTitle, { color: colors.text.primary }]}>
-            Yeni Kategori Ekle
+            Add New Category
           </Text>
 
           <TextInput
@@ -54,7 +54,7 @@ const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
                 backgroundColor: colors.background.primary,
               },
             ]}
-            placeholder="Kategori adı"
+            placeholder="Category name"
             placeholderTextColor={colors.text.tertiary}
             value={categoryName}
             onChangeText={onChangeCategoryName}
@@ -76,7 +76,7 @@ const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
                   { color: colors.text.primary },
                 ]}
               >
-                İptal
+                Cancel
               </Text>
             </TouchableOpacity>
 
@@ -91,7 +91,7 @@ const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
               <Text
                 style={[styles.addButtonText, { color: colors.text.primary }]}
               >
-                Ekle
+                Add
               </Text>
             </TouchableOpacity>
           </View>
