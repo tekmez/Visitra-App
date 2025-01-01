@@ -32,7 +32,7 @@ src/
 ├── components/     # Reusable UI components
 ├── screens/        # Application screens
 ├── navigation/     # Navigation configuration
-├── services/       # API and Firebase services
+├── services/       # API and Supabase services
 ├── store/          # Redux store and slices
 ├── hooks/          # Custom React hooks
 ├── utils/          # Helper functions
