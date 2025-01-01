@@ -1,5 +1,5 @@
-import React, { useState, useRef } from "react";
-import { View, Text, StyleSheet, Dimensions } from "react-native";
+import React, { useState, useRef, useCallback } from "react";
+import { View, Text, StyleSheet, Dimensions, FlatList } from "react-native";
 import { useFonts } from "expo-font";
 import {
   GestureHandlerRootView,
@@ -154,68 +154,85 @@ const HomeScreen = () => {
     setSelectedCategory(selectedCategory === category ? null : category);
   };
 
+  const renderItem = useCallback(
+    ({ item: place }: { item: Place }) => (
+      <PlaceListItem
+        image={place.image}
+        name={place.name}
+        location={place.location}
+        category={place.category}
+        onExplore={() => handleExplore(place)}
+        isFavorite={place.isFavorite}
+        onFavoritePress={() => handleFavoritePress(place.id)}
+      />
+    ),
+    [handleExplore, handleFavoritePress]
+  );
+
+  const ListEmptyComponent = useCallback(
+    () => (
+      <View style={styles.emptyContainer}>
+        <Text style={[styles.emptyText, { color: colors.text.secondary }]}>
+          {selectedCategory
+            ? `${selectedCategory} kategorisinde henüz bir yer yok`
+            : activeTab === "favorites"
+            ? "Henüz favori yeriniz yok"
+            : activeTab === "visited"
+            ? "Henüz ziyaret ettiğiniz bir yer yok"
+            : activeTab === "toVisit"
+            ? "Ziyaret etmek istediğiniz bir yer eklemediniz"
+            : "Henüz bir yer eklenmemiş"}
+        </Text>
+      </View>
+    ),
+    [selectedCategory, activeTab, colors.text.secondary]
+  );
+
+  const ListHeader = useCallback(
+    () => (
+      <>
+        <Text style={[styles.sectionTitle, { color: colors.text.primary }]}>
+          Categories
+        </Text>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={styles.categoriesContainer}
+          onScrollBeginDrag={() => {
+            isScrolling.value = true;
+          }}
+        >
+          {categories.map((category) => (
+            <PlaceCard
+              key={category.title}
+              image={category.image}
+              name={category.title}
+              isSelected={selectedCategory === category.title}
+              onPress={() => handleCategoryPress(category.title)}
+            />
+          ))}
+        </ScrollView>
+      </>
+    ),
+    [selectedCategory, colors.text.primary, handleCategoryPress]
+  );
+
   const renderContent = () => (
-    <ScrollView
-      ref={mainScrollRef}
+    <FlatList
+      data={filteredPlaces}
+      renderItem={renderItem}
+      keyExtractor={(item) => `list-${item.id}`}
+      ListHeaderComponent={ListHeader}
+      ListEmptyComponent={ListEmptyComponent}
       showsVerticalScrollIndicator={false}
+      contentContainerStyle={styles.listContainer}
       onScrollBeginDrag={() => {
         isScrolling.value = true;
       }}
-      scrollEventThrottle={16}
-    >
-      <Text style={[styles.sectionTitle, { color: colors.text.primary }]}>
-        Categories
-      </Text>
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        style={styles.categoriesContainer}
-        onScrollBeginDrag={() => {
-          isScrolling.value = true;
-        }}
-      >
-        {categories.map((category) => (
-          <PlaceCard
-            key={category.title}
-            image={category.image}
-            name={category.title}
-            isSelected={selectedCategory === category.title}
-            onPress={() => handleCategoryPress(category.title)}
-          />
-        ))}
-      </ScrollView>
-
-      <View style={styles.listContainer}>
-        {filteredPlaces.length > 0 ? (
-          filteredPlaces.map((place) => (
-            <PlaceListItem
-              key={`list-${place.id}`}
-              image={place.image}
-              name={place.name}
-              location={place.location}
-              category={place.category}
-              onExplore={() => handleExplore(place)}
-              isFavorite={place.isFavorite}
-              onFavoritePress={() => handleFavoritePress(place.id)}
-            />
-          ))
-        ) : (
-          <View style={styles.emptyContainer}>
-            <Text style={[styles.emptyText, { color: colors.text.secondary }]}>
-              {selectedCategory
-                ? `${selectedCategory} kategorisinde henüz bir yer yok`
-                : activeTab === "favorites"
-                ? "Henüz favori yeriniz yok"
-                : activeTab === "visited"
-                ? "Henüz ziyaret ettiğiniz bir yer yok"
-                : activeTab === "toVisit"
-                ? "Ziyaret etmek istediğiniz bir yer eklemediniz"
-                : "Henüz bir yer eklenmemiş"}
-            </Text>
-          </View>
-        )}
-      </View>
-    </ScrollView>
+      initialNumToRender={8}
+      maxToRenderPerBatch={5}
+      windowSize={5}
+    />
   );
 
   return (
@@ -269,9 +286,11 @@ const styles = StyleSheet.create({
   categoriesContainer: {
     paddingHorizontal: 20,
     marginTop: 8,
+    marginBottom: 16,
   },
   listContainer: {
-    marginTop: 8,
+    paddingBottom: 20,
+    flexGrow: 1,
   },
   emptyContainer: {
     flex: 1,

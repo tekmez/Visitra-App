@@ -7,10 +7,26 @@ import AppNavigator from "./src/navigation/AppNavigator";
 import { useFonts } from "expo-font";
 import { fontConfig } from "./src/theme/fonts";
 import * as SplashScreen from "expo-splash-screen";
-import { View } from "react-native";
-import { ThemeProvider } from "./src/context/ThemeContext";
+import { StatusBar } from "react-native";
+import { ThemeProvider, useTheme } from "./src/context/ThemeContext";
 
 SplashScreen.preventAutoHideAsync();
+
+function AppContent() {
+  const { colorScheme } = useTheme();
+
+  return (
+    <>
+      <StatusBar
+        barStyle={colorScheme === "dark" ? "light-content" : "dark-content"}
+        backgroundColor={colorScheme === "dark" ? "#000" : "#fff"}
+      />
+      <NavigationContainer>
+        <AppNavigator />
+      </NavigationContainer>
+    </>
+  );
+}
 
 export default function App() {
   const [fontsLoaded, fontError] = useFonts(fontConfig);
@@ -32,9 +48,7 @@ export default function App() {
     <StoreProvider store={store}>
       <ThemeProvider>
         <PaperProvider>
-          <NavigationContainer>
-            <AppNavigator />
-          </NavigationContainer>
+          <AppContent />
         </PaperProvider>
       </ThemeProvider>
     </StoreProvider>

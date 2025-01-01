@@ -89,7 +89,7 @@ const ProfileScreen: React.FC = () => {
                 { color: colors.text.secondary },
               ]}
             >
-              {isDark ? "Light Mode" : "Dark Mode"}
+              {isDark ? "Dark Mode" : "Light Mode"}
             </Text>
           </TouchableOpacity>
         </View>
