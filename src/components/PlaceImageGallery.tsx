@@ -7,6 +7,8 @@ import {
   Image,
   StyleSheet,
 } from "react-native";
+import { useAppTheme } from "../hooks/useAppTheme";
+import { fonts } from "../theme/fonts";
 
 interface PlaceImageGalleryProps {
   images: string[];
@@ -17,9 +19,15 @@ export const PlaceImageGallery: React.FC<PlaceImageGalleryProps> = ({
   images,
   onImagePress,
 }) => {
+  const { colors } = useAppTheme();
+
   return (
-    <View style={styles.section}>
-      <Text style={styles.sectionTitle}>Fotoğraflar</Text>
+    <View
+      style={[styles.section, { borderBottomColor: colors.border.primary }]}
+    >
+      <Text style={[styles.sectionTitle, { color: colors.text.primary }]}>
+        Fotoğraflar
+      </Text>
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -29,7 +37,10 @@ export const PlaceImageGallery: React.FC<PlaceImageGalleryProps> = ({
           <TouchableOpacity
             key={index}
             onPress={() => onImagePress(index)}
-            style={styles.imageContainer}
+            style={[
+              styles.imageContainer,
+              { backgroundColor: colors.background.secondary },
+            ]}
           >
             <Image source={{ uri: image }} style={styles.image} />
           </TouchableOpacity>
@@ -44,13 +55,11 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     paddingHorizontal: 16,
     borderBottomWidth: 1,
-    borderBottomColor: "#F0F0F0",
   },
   sectionTitle: {
     fontSize: 18,
-    fontWeight: "bold",
+    fontFamily: fonts.bold,
     marginBottom: 12,
-    color: "#333",
   },
   imageGallery: {
     marginTop: 12,

@@ -10,9 +10,9 @@ import {
 } from "react-native";
 import * as ImagePickerExpo from "expo-image-picker";
 import { fonts } from "../theme/fonts";
-import { colors } from "../theme/colors";
 import { ErrorText } from "./common";
 import { ImagePreviewModal } from "./ImagePreviewModal";
+import { useAppTheme } from "../hooks/useAppTheme";
 
 const MAX_IMAGES = 4;
 
@@ -27,6 +27,7 @@ export const ImagePicker: React.FC<ImagePickerProps> = ({
   selectedImages,
   error,
 }) => {
+  const { colors } = useAppTheme();
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
@@ -105,17 +106,36 @@ export const ImagePicker: React.FC<ImagePickerProps> = ({
               <Image source={{ uri }} style={styles.image} />
             </TouchableOpacity>
             <TouchableOpacity
-              style={styles.removeButton}
+              style={[
+                styles.removeButton,
+                { backgroundColor: colors.background.primary },
+              ]}
               onPress={() => removeImage(index)}
             >
-              <Text style={styles.removeButtonText}>✕</Text>
+              <Text
+                style={[styles.removeButtonText, { color: colors.text.error }]}
+              >
+                ✕
+              </Text>
             </TouchableOpacity>
           </View>
         ))}
         {selectedImages.length < MAX_IMAGES && (
-          <TouchableOpacity style={styles.addButton} onPress={pickImage}>
-            <Text style={styles.addButtonText}>+</Text>
-            <Text style={styles.addButtonLabel}>
+          <TouchableOpacity
+            style={[
+              styles.addButton,
+              { backgroundColor: colors.background.secondary },
+            ]}
+            onPress={pickImage}
+          >
+            <Text
+              style={[styles.addButtonText, { color: colors.text.secondary }]}
+            >
+              +
+            </Text>
+            <Text
+              style={[styles.addButtonLabel, { color: colors.text.secondary }]}
+            >
               Fotoğraf Ekle ({selectedImages.length}/{MAX_IMAGES})
             </Text>
           </TouchableOpacity>
@@ -162,20 +182,14 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
     borderRadius: 12,
-    backgroundColor: colors.background.primary,
     justifyContent: "center",
     alignItems: "center",
-    shadowColor: colors.text.primary,
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
   },
   removeButtonText: {
-    color: colors.text.error,
     fontSize: 16,
     fontWeight: "bold",
   },
@@ -183,18 +197,15 @@ const styles = StyleSheet.create({
     width: 120,
     height: 120,
     borderRadius: 12,
-    backgroundColor: colors.background.secondary,
     justifyContent: "center",
     alignItems: "center",
   },
   addButtonText: {
     fontSize: 32,
-    color: colors.text.secondary,
     marginBottom: 4,
   },
   addButtonLabel: {
     fontSize: 12,
-    color: colors.text.secondary,
     fontFamily: fonts.regular,
   },
 });

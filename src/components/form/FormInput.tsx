@@ -1,6 +1,6 @@
 import React from "react";
 import { TextInput, TextInputProps, StyleSheet } from "react-native";
-import { colors } from "../../theme/colors";
+import { useAppTheme } from "../../hooks/useAppTheme";
 import { fonts } from "../../theme/fonts";
 
 interface FormInputProps extends TextInputProps {
@@ -12,9 +12,20 @@ export const FormInput: React.FC<FormInputProps> = ({
   style,
   ...props
 }) => {
+  const { colors } = useAppTheme();
+
   return (
     <TextInput
-      style={[styles.input, hasError && styles.inputError, style]}
+      style={[
+        styles.input,
+        hasError && { borderColor: colors.text.error },
+        {
+          backgroundColor: colors.background.secondary,
+          color: colors.text.primary,
+          borderColor: colors.border.primary,
+        },
+        style,
+      ]}
       placeholderTextColor={colors.text.tertiary}
       {...props}
     />
@@ -23,17 +34,11 @@ export const FormInput: React.FC<FormInputProps> = ({
 
 const styles = StyleSheet.create({
   input: {
-    backgroundColor: colors.background.secondary,
     borderRadius: 8,
     paddingHorizontal: 12,
     paddingVertical: 10,
     fontSize: 16,
     fontFamily: fonts.regular,
-    color: colors.text.primary,
     borderWidth: 1,
-    borderColor: colors.border.primary,
-  },
-  inputError: {
-    borderColor: colors.text.error,
   },
 });

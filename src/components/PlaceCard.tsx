@@ -8,6 +8,7 @@ import {
   Dimensions,
 } from "react-native";
 import { fonts } from "../theme/fonts";
+import { useAppTheme } from "../hooks/useAppTheme";
 
 type PlaceCardProps = {
   image: { uri: string };
@@ -26,18 +27,28 @@ export const PlaceCard = ({
   isSelected,
   onPress,
 }: PlaceCardProps) => {
+  const { colors } = useAppTheme();
+
   return (
     <TouchableOpacity
-      style={[styles.card, isSelected && styles.selectedCard]}
+      style={[
+        styles.card,
+        { backgroundColor: colors.background.card },
+        isSelected && { borderColor: colors.secondary },
+      ]}
       onPress={onPress}
     >
       <Image source={image} style={styles.image} />
       <View style={styles.info}>
-        <Text style={styles.name}>{name}</Text>
+        <Text style={[styles.name, { color: colors.text.primary }]}>
+          {name}
+        </Text>
         {location && (
           <>
             <Text style={styles.location}>{location}</Text>
-            <Text style={styles.category}>{category}</Text>
+            <Text style={[styles.category, { color: colors.text.secondary }]}>
+              {category}
+            </Text>
           </>
         )}
       </View>

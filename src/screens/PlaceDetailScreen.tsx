@@ -16,6 +16,7 @@ import { PlaceDetailHeader } from "../components/PlaceDetailHeader";
 import { PlaceImageGallery } from "../components/PlaceImageGallery";
 import { PlaceNotes } from "../components/PlaceNotes";
 import { PlaceMap } from "../components/PlaceMap";
+import { useAppTheme } from "../hooks/useAppTheme";
 
 type PlaceDetailScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -32,6 +33,7 @@ const PlaceDetailScreen: React.FC<PlaceDetailScreenProps> = ({
   route,
   navigation,
 }) => {
+  const { colors } = useAppTheme();
   const { place } = route.params;
   const [isImageModalVisible, setIsImageModalVisible] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -57,7 +59,9 @@ const PlaceDetailScreen: React.FC<PlaceDetailScreenProps> = ({
   };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <SafeAreaView
+      style={[styles.safeArea, { backgroundColor: colors.background.primary }]}
+    >
       <ScrollView style={styles.container}>
         <PlaceDetailHeader
           title={place.name}
@@ -69,9 +73,15 @@ const PlaceDetailScreen: React.FC<PlaceDetailScreenProps> = ({
           onImagePress={handleImagePress}
         />
 
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Açıklama</Text>
-          <Text style={styles.description}>{place.description}</Text>
+        <View
+          style={[styles.section, { borderBottomColor: colors.border.primary }]}
+        >
+          <Text style={[styles.sectionTitle, { color: colors.text.primary }]}>
+            Açıklama
+          </Text>
+          <Text style={[styles.description, { color: colors.text.secondary }]}>
+            {place.description}
+          </Text>
         </View>
 
         <PlaceNotes notes={notes} onAddNote={handleAddNote} />
@@ -82,10 +92,13 @@ const PlaceDetailScreen: React.FC<PlaceDetailScreenProps> = ({
           style={[
             styles.visitButton,
             status === "visited" && styles.visitedButton,
+            { backgroundColor: colors.secondary },
           ]}
           onPress={toggleVisited}
         >
-          <Text style={styles.visitButtonText}>
+          <Text
+            style={[styles.visitButtonText, { color: colors.text.primary }]}
+          >
             {status === "visited" ? "Gidildi ✓" : "Gidildi Olarak İşaretle"}
           </Text>
         </TouchableOpacity>

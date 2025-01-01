@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { fonts } from "../theme/fonts";
 import { Ionicons } from "@expo/vector-icons";
+import { useAppTheme } from "../hooks/useAppTheme";
 
 type PlaceListItemProps = {
   image: { uri: string };
@@ -22,31 +23,50 @@ export const PlaceListItem = ({
   isFavorite,
   onFavoritePress,
 }: PlaceListItemProps) => {
+  const { colors } = useAppTheme();
+
   return (
     <View style={styles.container}>
       <View style={styles.mainContent}>
         <View style={styles.textContainer}>
           <View>
             <Text style={styles.titleText}>
-              <Text style={styles.name}>{name}</Text>
-              <Text style={styles.location}>, {location}</Text>
+              <Text style={[styles.name, { color: colors.text.primary }]}>
+                {name}
+              </Text>
+              <Text style={[styles.location, { color: colors.text.primary }]}>
+                , {location}
+              </Text>
             </Text>
-            <Text style={styles.category}>{category}</Text>
+            <Text style={[styles.category, { color: colors.text.secondary }]}>
+              {category}
+            </Text>
           </View>
-          <TouchableOpacity style={styles.exploreButton} onPress={onExplore}>
-            <Text style={styles.exploreText}>Explore</Text>
+          <TouchableOpacity
+            style={[
+              styles.exploreButton,
+              { backgroundColor: colors.background.secondary },
+            ]}
+            onPress={onExplore}
+          >
+            <Text style={[styles.exploreText, { color: colors.text.primary }]}>
+              Explore
+            </Text>
           </TouchableOpacity>
         </View>
         <View style={styles.imageContainer}>
           <Image source={image} style={styles.image} />
           <TouchableOpacity
-            style={styles.favoriteButton}
+            style={[
+              styles.favoriteButton,
+              { backgroundColor: "rgba(0, 0, 0, 0.3)" },
+            ]}
             onPress={onFavoritePress}
           >
             <Ionicons
               name={isFavorite ? "heart" : "heart-outline"}
               size={24}
-              color={isFavorite ? "#FF4B4B" : "#FFF"}
+              color={isFavorite ? colors.status.error : colors.text.primary}
             />
           </TouchableOpacity>
         </View>
@@ -77,28 +97,23 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 20,
     fontFamily: fonts.bold,
-    color: "#000",
   },
   location: {
     fontSize: 20,
     fontFamily: fonts.regular,
-    color: "#000",
   },
   category: {
     fontSize: 16,
-    color: "#666",
     fontFamily: fonts.regular,
     marginBottom: 12,
   },
   exploreButton: {
-    backgroundColor: "#F5F5F5",
     paddingVertical: 8,
     paddingHorizontal: 16,
     borderRadius: 8,
     alignSelf: "flex-start",
   },
   exploreText: {
-    color: "#000",
     fontSize: 14,
     fontFamily: fonts.medium,
   },
@@ -114,7 +129,6 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 8,
     right: 8,
-    backgroundColor: "rgba(0, 0, 0, 0.3)",
     borderRadius: 20,
     padding: 8,
   },

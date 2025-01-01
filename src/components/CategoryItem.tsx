@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
-import { colors } from "../theme/colors";
+import { useAppTheme } from "../hooks/useAppTheme";
 import { fonts } from "../theme/fonts";
 import { Category } from "../constants/categories";
 
@@ -13,15 +13,23 @@ const CategoryItem: React.FC<CategoryItemProps> = ({
   placeCount,
   image,
   onPress,
-}) => (
-  <TouchableOpacity style={styles.categoryItem} onPress={onPress}>
-    <Image source={image} style={styles.categoryImage} />
-    <View style={styles.categoryInfo}>
-      <Text style={styles.categoryTitle}>{title}</Text>
-      <Text style={styles.categoryCount}>{placeCount} places</Text>
-    </View>
-  </TouchableOpacity>
-);
+}) => {
+  const { colors } = useAppTheme();
+
+  return (
+    <TouchableOpacity style={styles.categoryItem} onPress={onPress}>
+      <Image source={image} style={styles.categoryImage} />
+      <View style={styles.categoryInfo}>
+        <Text style={[styles.categoryTitle, { color: colors.text.primary }]}>
+          {title}
+        </Text>
+        <Text style={[styles.categoryCount, { color: colors.text.secondary }]}>
+          {placeCount} places
+        </Text>
+      </View>
+    </TouchableOpacity>
+  );
+};
 
 const styles = StyleSheet.create({
   categoryItem: {
@@ -45,7 +53,6 @@ const styles = StyleSheet.create({
   categoryCount: {
     fontSize: 14,
     fontFamily: fonts.regular,
-    color: colors.text.secondary,
     marginTop: 4,
   },
 });

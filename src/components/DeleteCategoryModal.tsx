@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet, Modal, TouchableOpacity } from "react-native";
-import { colors } from "../theme/colors";
+import { useAppTheme } from "../hooks/useAppTheme";
 import { fonts } from "../theme/fonts";
 
 interface DeleteCategoryModalProps {
@@ -14,6 +14,8 @@ const DeleteCategoryModal: React.FC<DeleteCategoryModalProps> = ({
   onClose,
   categoryTitle,
 }) => {
+  const { colors } = useAppTheme();
+
   const onDelete = (categoryTitle: string) => {
     onClose();
   };
@@ -26,24 +28,51 @@ const DeleteCategoryModal: React.FC<DeleteCategoryModalProps> = ({
       onRequestClose={onClose}
     >
       <View style={styles.modalOverlay}>
-        <View style={styles.modalContent}>
-          <Text style={styles.modalTitle}>
+        <View
+          style={[
+            styles.modalContent,
+            { backgroundColor: colors.background.modal },
+          ]}
+        >
+          <Text style={[styles.modalTitle, { color: colors.text.primary }]}>
             Silmek İstediğinize Emin Misiniz
           </Text>
 
           <View style={styles.modalButtons}>
             <TouchableOpacity
-              style={[styles.modalButton, styles.cancelButton]}
+              style={[
+                styles.modalButton,
+                styles.cancelButton,
+                { backgroundColor: colors.background.secondary },
+              ]}
               onPress={onClose}
             >
-              <Text style={styles.cancelButtonText}>İptal</Text>
+              <Text
+                style={[
+                  styles.cancelButtonText,
+                  { color: colors.text.primary },
+                ]}
+              >
+                İptal
+              </Text>
             </TouchableOpacity>
 
             <TouchableOpacity
-              style={[styles.modalButton, styles.deleteButton]}
+              style={[
+                styles.modalButton,
+                styles.deleteButton,
+                { backgroundColor: colors.status.error },
+              ]}
               onPress={() => onDelete(categoryTitle)}
             >
-              <Text style={styles.deleteButtonText}>Sil</Text>
+              <Text
+                style={[
+                  styles.deleteButtonText,
+                  { color: colors.text.primary },
+                ]}
+              >
+                Sil
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -60,7 +89,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   modalContent: {
-    backgroundColor: colors.background.primary,
     borderRadius: 16,
     padding: 20,
     width: "80%",
@@ -84,18 +112,15 @@ const styles = StyleSheet.create({
   },
   cancelButton: {
     marginRight: 10,
-    backgroundColor: colors.background.secondary,
   },
   cancelButtonText: {
-    color: colors.text.primary,
     fontSize: 16,
     fontFamily: fonts.medium,
   },
   deleteButton: {
-    backgroundColor: colors.status.error,
+    marginLeft: 10,
   },
   deleteButtonText: {
-    color: "white",
     fontSize: 16,
     fontFamily: fonts.medium,
   },

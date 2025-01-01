@@ -8,6 +8,7 @@ import { useFonts } from "expo-font";
 import { fontConfig } from "./src/theme/fonts";
 import * as SplashScreen from "expo-splash-screen";
 import { View } from "react-native";
+import { ThemeProvider } from "./src/context/ThemeContext";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -29,11 +30,13 @@ export default function App() {
 
   return (
     <StoreProvider store={store}>
-      <PaperProvider>
-        <NavigationContainer>
-          <AppNavigator />
-        </NavigationContainer>
-      </PaperProvider>
+      <ThemeProvider>
+        <PaperProvider>
+          <NavigationContainer>
+            <AppNavigator />
+          </NavigationContainer>
+        </PaperProvider>
+      </ThemeProvider>
     </StoreProvider>
   );
 }

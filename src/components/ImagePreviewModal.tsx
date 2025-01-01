@@ -11,7 +11,7 @@ import {
   FlatList,
   Pressable,
 } from "react-native";
-import { colors } from "../theme/colors";
+import { useAppTheme } from "../hooks/useAppTheme";
 import { fonts } from "../theme/fonts";
 
 interface ImagePreviewModalProps {
@@ -33,6 +33,7 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
   currentIndex,
   onIndexChange,
 }) => {
+  const { colors } = useAppTheme();
   const flatListRef = React.useRef<FlatList>(null);
 
   React.useEffect(() => {
@@ -71,11 +72,29 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
       <View style={styles.overlay}>
         <SafeAreaView style={styles.container}>
           <View style={styles.header}>
-            <Text style={styles.pageIndicator}>
+            <Text
+              style={[
+                styles.pageIndicator,
+                { color: colors.background.primary },
+              ]}
+            >
               {currentIndex + 1} / {images.length}
             </Text>
-            <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-              <Text style={styles.closeButtonText}>✕</Text>
+            <TouchableOpacity
+              style={[
+                styles.closeButton,
+                { backgroundColor: colors.background.secondary },
+              ]}
+              onPress={onClose}
+            >
+              <Text
+                style={[
+                  styles.closeButtonText,
+                  { color: colors.text.secondary },
+                ]}
+              >
+                ✕
+              </Text>
             </TouchableOpacity>
           </View>
           <View style={styles.contentContainer}>
@@ -126,17 +145,14 @@ const styles = StyleSheet.create({
     width: 28,
     height: 28,
     borderRadius: 14,
-    backgroundColor: colors.background.secondary,
     justifyContent: "center",
     alignItems: "center",
   },
   closeButtonText: {
-    color: colors.text.secondary,
     fontSize: 14,
     fontFamily: fonts.medium,
   },
   pageIndicator: {
-    color: colors.background.primary,
     fontSize: 14,
     fontFamily: fonts.medium,
   },

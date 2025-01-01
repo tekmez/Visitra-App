@@ -6,7 +6,6 @@ import {
   SafeAreaView,
   TouchableOpacity,
 } from "react-native";
-import { colors } from "../theme/colors";
 import { fonts } from "../theme/fonts";
 import { categories } from "../constants/categories";
 import { AntDesign } from "@expo/vector-icons";
@@ -19,8 +18,10 @@ import Reanimated, {
   useAnimatedStyle,
 } from "react-native-reanimated";
 import DeleteCategoryModal from "@/components/DeleteCategoryModal";
+import { useAppTheme } from "../hooks/useAppTheme";
 
 const ProfileScreen: React.FC = () => {
+  const { colors, isDark, toggleColorScheme } = useAppTheme();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [newCategoryName, setNewCategoryName] = useState("");
@@ -35,13 +36,11 @@ const ProfileScreen: React.FC = () => {
   };
 
   function RightAction(prog: SharedValue<number>, drag: SharedValue<number>) {
-    const styleAnimation = useAnimatedStyle(() => {
-      return {
-        transform: [{ translateX: drag.value + 50 }],
-        justifyContent: "center",
-        alignItems: "center",
-      };
-    });
+    const styleAnimation = useAnimatedStyle(() => ({
+      transform: [{ translateX: drag.value + 50 }],
+      justifyContent: "center",
+      alignItems: "center",
+    }));
 
     const handleDeletePress = () => {
       setIsDeleteModalVisible(true);
@@ -51,37 +50,60 @@ const ProfileScreen: React.FC = () => {
     return (
       <Reanimated.View style={styleAnimation}>
         <TouchableOpacity
-          style={styles.deleteButton}
+          style={[styles.deleteButton, { borderColor: colors.border.primary }]}
           onPress={handleDeletePress}
         >
-          <AntDesign name="delete" size={24} color={"red"} />
+          <AntDesign name="delete" size={24} color={colors.status.error} />
         </TouchableOpacity>
       </Reanimated.View>
     );
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView
+      style={[styles.container, { backgroundColor: colors.background.primary }]}
+    >
       <GestureHandlerRootView>
         <View style={styles.header}>
-          <Text style={styles.headerTitle}>Profile & Settings</Text>
+          <Text style={[styles.headerTitle, { color: colors.text.primary }]}>
+            Profile & Settings
+          </Text>
         </View>
 
-        <View style={styles.themeSection}>
-          <Text style={styles.themeText}>Theme</Text>
-          <TouchableOpacity style={styles.systemButton}>
-            <Text style={styles.systemButtonText}>System</Text>
+        <View
+          style={[
+            styles.themeSection,
+            { borderBottomColor: colors.border.primary },
+          ]}
+        >
+          <Text style={[styles.themeText, { color: colors.text.primary }]}>
+            Theme
+          </Text>
+          <TouchableOpacity
+            style={styles.systemButton}
+            onPress={toggleColorScheme}
+          >
+            <Text
+              style={[
+                styles.systemButtonText,
+                { color: colors.text.secondary },
+              ]}
+            >
+              {isDark ? "Light Mode" : "Dark Mode"}
+            </Text>
           </TouchableOpacity>
         </View>
 
         <View style={styles.categoriesSection}>
           <View style={styles.categoriesHeader}>
-            <Text style={styles.sectionTitle}>Categories</Text>
+            <Text style={[styles.sectionTitle, { color: colors.text.primary }]}>
+              Categories
+            </Text>
             <TouchableOpacity
               onPress={() => setIsModalVisible(true)}
-              style={styles.addButton}
+              style={[styles.addButton, { backgroundColor: colors.secondary }]}
             >
-              <AntDesign name="plus" size={20} color={"white"} />
+              <AntDesign name="plus" size={20} color={colors.text.primary} />
             </TouchableOpacity>
           </View>
           {categoriesList.map((category) => (
@@ -116,7 +138,6 @@ const ProfileScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background.primary,
     paddingBottom: 20,
   },
   header: {
@@ -136,12 +157,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 15,
     borderBottomWidth: 1,
-    borderBottomColor: colors.border.primary,
   },
   themeText: {
     fontSize: 16,
     fontFamily: fonts.medium,
-    color: colors.text.primary,
   },
   systemButton: {
     flex: 0,
@@ -149,7 +168,6 @@ const styles = StyleSheet.create({
   systemButtonText: {
     fontSize: 16,
     fontFamily: fonts.regular,
-    color: colors.text.secondary,
   },
   categoriesSection: {
     paddingHorizontal: 20,
@@ -169,7 +187,6 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 16,
-    backgroundColor: colors.secondary,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -180,7 +197,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderWidth: 1,
-    borderColor: colors.border.primary,
   },
 });
 

@@ -7,6 +7,8 @@ import {
   StyleSheet,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { useAppTheme } from "../hooks/useAppTheme";
+import { fonts } from "../theme/fonts";
 
 interface PlaceNotesProps {
   notes: string;
@@ -14,29 +16,43 @@ interface PlaceNotesProps {
 }
 
 export const PlaceNotes: React.FC<PlaceNotesProps> = ({ notes, onAddNote }) => {
+  const { colors } = useAppTheme();
+
   return (
-    <View style={styles.section}>
+    <View
+      style={[styles.section, { borderBottomColor: colors.border.primary }]}
+    >
       <View style={styles.sectionHeader}>
-        <Text style={styles.sectionTitle}>Notlarım</Text>
+        <Text style={[styles.sectionTitle, { color: colors.text.primary }]}>
+          Notlarım
+        </Text>
         <TouchableOpacity style={styles.addButton} onPress={onAddNote}>
           <Ionicons
             name={notes ? "create" : "add-circle"}
             size={24}
-            color="#FFB800"
+            color={colors.secondary}
           />
         </TouchableOpacity>
       </View>
       {notes ? (
-        <View style={styles.noteContent}>
-          <ScrollView
-            style={styles.noteScroll}
-            showsVerticalScrollIndicator={false}
-          >
-            <Text style={styles.description}>{notes}</Text>
+        <View
+          style={[
+            styles.noteContent,
+            { backgroundColor: colors.background.secondary },
+          ]}
+        >
+          <ScrollView style={styles.noteScroll}>
+            <Text
+              style={[styles.description, { color: colors.text.secondary }]}
+            >
+              {notes}
+            </Text>
           </ScrollView>
         </View>
       ) : (
-        <Text style={styles.emptyNotes}>Henüz not eklenmemiş</Text>
+        <Text style={[styles.emptyNotes, { color: colors.text.tertiary }]}>
+          Henüz not eklenmemiş
+        </Text>
       )}
     </View>
   );
@@ -57,8 +73,7 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 18,
-    fontWeight: "bold",
-    color: "#333",
+    fontFamily: fonts.bold,
   },
   addButton: {
     padding: 4,
@@ -74,10 +89,8 @@ const styles = StyleSheet.create({
   description: {
     fontSize: 16,
     lineHeight: 24,
-    color: "#444",
   },
   emptyNotes: {
-    color: "#999",
     fontSize: 15,
     fontStyle: "italic",
   },

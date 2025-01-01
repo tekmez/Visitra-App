@@ -7,7 +7,7 @@ import {
   Text,
 } from "react-native";
 import { fonts } from "../theme/fonts";
-import { colors } from "../theme/colors";
+import { useAppTheme } from "../hooks/useAppTheme";
 import { categories } from "../constants/categories";
 import { Label, ErrorText } from "./common";
 
@@ -22,16 +22,21 @@ export const CategoryPicker: React.FC<CategoryPickerProps> = ({
   onCategorySelect,
   error,
 }) => {
+  const { colors } = useAppTheme();
+
   return (
     <View style={styles.container}>
       <Label>Kategori</Label>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+      <ScrollView>
         {categories.map((cat) => (
           <TouchableOpacity
             key={cat.title}
             style={[
               styles.categoryButton,
-              selectedCategory === cat.title && styles.categoryButtonSelected,
+              { backgroundColor: colors.background.secondary },
+              selectedCategory === cat.title && {
+                backgroundColor: colors.secondary,
+              },
             ]}
             onPress={() => {
               onCategorySelect(cat.title);
@@ -40,7 +45,10 @@ export const CategoryPicker: React.FC<CategoryPickerProps> = ({
             <Text
               style={[
                 styles.categoryText,
-                selectedCategory === cat.title && styles.categoryTextSelected,
+                { color: colors.text.secondary },
+                selectedCategory === cat.title && {
+                  color: colors.text.primary,
+                },
               ]}
             >
               {cat.title}
@@ -62,18 +70,10 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     marginRight: 8,
     marginBottom: 8,
-    backgroundColor: colors.background.secondary,
-  },
-  categoryButtonSelected: {
-    backgroundColor: colors.secondary,
   },
   categoryText: {
     fontSize: 14,
     fontFamily: fonts.medium,
-    color: colors.text.secondary,
-  },
-  categoryTextSelected: {
-    color: colors.text.primary,
   },
   categoriesContainer: {
     flexDirection: "row",

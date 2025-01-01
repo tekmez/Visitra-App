@@ -1,35 +1,77 @@
-export const colors = {
-  // Ana renkler
-  primary: "#007AFF",
-  secondary: "#FFB800",
+import { palette } from './palette';
+import { ColorScheme, Theme, ThemeColors } from './types';
+
+const lightColors: ThemeColors = {
+  primary: palette.blue.light,
+  secondary: palette.status.warning,
   
-  // Metin renkleri
   text: {
-    primary: "#000000",
-    secondary: "#333333",
-    tertiary: "#666666",
-    error: "#FF3B30",
+    primary: palette.gray[800],
+    secondary: palette.gray[600],
+    tertiary: palette.gray[500],
+    error: palette.status.error.light,
   },
 
-  // Arka plan renkleri
   background: {
-    primary: "#FFFFFF",
-    secondary: "#F5F5F5",
+    primary: palette.gray[100],
+    secondary: palette.gray[200],
+    card: palette.gray[100],
+    modal: palette.gray[100],
   },
 
-  // Kenarlık renkleri
   border: {
-    primary: "#DDDDDD",
-    error: "#FF3B30",
+    primary: palette.gray[400],
+    secondary: palette.gray[300],
+    error: palette.status.error.light,
   },
 
-  // Durum renkleri
   status: {
-    success: "#34C759",
-    warning: "#FFB800",
-    error: "#FF3B30",
-    info: "#007AFF",
+    success: palette.status.success.light,
+    warning: palette.status.warning,
+    error: palette.status.error.light,
+    info: palette.status.info.light,
   },
-} as const;
+};
 
-export type Colors = typeof colors; 
+const darkColors: ThemeColors = {
+  primary: palette.custom.accent.blue,
+  secondary: palette.custom.accent.yellow,
+  
+  text: {
+    primary: palette.custom.darkText.primary,
+    secondary: palette.custom.darkText.secondary,
+    tertiary: palette.custom.darkText.tertiary,
+    error: palette.status.error.dark,
+  },
+
+  background: {
+    primary: palette.custom.darkBackground,
+    secondary: palette.custom.darkSurface,
+    card: palette.custom.darkSurface,
+    modal: palette.custom.darkSurface,
+  },
+
+  border: {
+    primary: palette.custom.darkBorder,
+    secondary: palette.custom.darkBorder,
+    error: palette.status.error.dark,
+  },
+
+  status: {
+    success: palette.status.success.dark,
+    warning: palette.status.warning,
+    error: palette.status.error.dark,
+    info: palette.status.info.dark,
+  },
+};
+
+export const themes: Record<ColorScheme, Theme> = {
+  light: {
+    colors: lightColors,
+    isDark: false,
+  },
+  dark: {
+    colors: darkColors,
+    isDark: true,
+  },
+}; 

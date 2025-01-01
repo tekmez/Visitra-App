@@ -7,11 +7,14 @@ import AddPlaceScreen from "../screens/AddPlaceScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import PlaceDetailScreen from "../screens/PlaceDetailScreen";
 import { RootStackParamList, RootTabParamList } from "../types/navigation";
+import { useAppTheme } from "../hooks/useAppTheme";
 
 const Tab = createBottomTabNavigator<RootTabParamList>();
 const Stack = createStackNavigator<RootStackParamList>();
 
 const TabNavigator = () => {
+  const { colors } = useAppTheme();
+
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -28,12 +31,12 @@ const TabNavigator = () => {
 
           return <Ionicons name={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: "#FFB800",
-        tabBarInactiveTintColor: "gray",
+        tabBarActiveTintColor: colors.secondary,
+        tabBarInactiveTintColor: colors.text.tertiary,
         headerShown: false,
         tabBarStyle: {
-          backgroundColor: "#FFF",
-          borderTopColor: "#F0F0F0",
+          backgroundColor: colors.background.card,
+          borderTopColor: colors.border.primary,
         },
       })}
     >

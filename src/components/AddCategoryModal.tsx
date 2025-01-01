@@ -7,7 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import { colors } from "../theme/colors";
+import { useAppTheme } from "../hooks/useAppTheme";
 import { fonts } from "../theme/fonts";
 
 interface AddCategoryModalProps {
@@ -25,6 +25,8 @@ const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
   categoryName,
   onChangeCategoryName,
 }) => {
+  const { colors } = useAppTheme();
+
   return (
     <Modal
       visible={visible}
@@ -33,12 +35,27 @@ const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
       onRequestClose={onClose}
     >
       <View style={styles.modalOverlay}>
-        <View style={styles.modalContent}>
-          <Text style={styles.modalTitle}>Yeni Kategori Ekle</Text>
+        <View
+          style={[
+            styles.modalContent,
+            { backgroundColor: colors.background.modal },
+          ]}
+        >
+          <Text style={[styles.modalTitle, { color: colors.text.primary }]}>
+            Yeni Kategori Ekle
+          </Text>
 
           <TextInput
-            style={styles.input}
+            style={[
+              styles.input,
+              {
+                borderColor: colors.border.primary,
+                color: colors.text.primary,
+                backgroundColor: colors.background.primary,
+              },
+            ]}
             placeholder="Kategori adı"
+            placeholderTextColor={colors.text.tertiary}
             value={categoryName}
             onChangeText={onChangeCategoryName}
             autoFocus
@@ -46,17 +63,36 @@ const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
 
           <View style={styles.modalButtons}>
             <TouchableOpacity
-              style={[styles.modalButton, styles.cancelButton]}
+              style={[
+                styles.modalButton,
+                styles.cancelButton,
+                { backgroundColor: colors.background.secondary },
+              ]}
               onPress={onClose}
             >
-              <Text style={styles.cancelButtonText}>İptal</Text>
+              <Text
+                style={[
+                  styles.cancelButtonText,
+                  { color: colors.text.primary },
+                ]}
+              >
+                İptal
+              </Text>
             </TouchableOpacity>
 
             <TouchableOpacity
-              style={[styles.modalButton, styles.addButton]}
+              style={[
+                styles.modalButton,
+                styles.addButton,
+                { backgroundColor: colors.secondary },
+              ]}
               onPress={onAdd}
             >
-              <Text style={styles.addButtonText}>Ekle</Text>
+              <Text
+                style={[styles.addButtonText, { color: colors.text.primary }]}
+              >
+                Ekle
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -73,7 +109,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   modalContent: {
-    backgroundColor: colors.background.primary,
     borderRadius: 16,
     padding: 20,
     width: "80%",
@@ -87,7 +122,6 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
-    borderColor: colors.border.primary,
     borderRadius: 8,
     padding: 12,
     fontSize: 16,
@@ -106,19 +140,15 @@ const styles = StyleSheet.create({
   },
   cancelButton: {
     marginRight: 10,
-    backgroundColor: colors.background.secondary,
   },
   addButton: {
     marginLeft: 10,
-    backgroundColor: colors.secondary,
   },
   cancelButtonText: {
-    color: colors.text.primary,
     fontSize: 16,
     fontFamily: fonts.medium,
   },
   addButtonText: {
-    color: colors.text.primary,
     fontSize: 16,
     fontFamily: fonts.medium,
   },

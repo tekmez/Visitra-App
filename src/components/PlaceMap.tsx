@@ -1,5 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
+import { useAppTheme } from "../hooks/useAppTheme";
+import { fonts } from "../theme/fonts";
 import MapView, { Marker } from "react-native-maps";
 
 interface PlaceMapProps {
@@ -10,9 +12,13 @@ interface PlaceMapProps {
 }
 
 export const PlaceMap: React.FC<PlaceMapProps> = ({ coordinates }) => {
+  const { colors } = useAppTheme();
+
   return (
     <View style={styles.mapContainer}>
-      <Text style={styles.sectionTitle}>Konum</Text>
+      <Text style={[styles.sectionTitle, { color: colors.text.primary }]}>
+        Konum
+      </Text>
       <MapView
         style={styles.map}
         initialRegion={{
@@ -35,9 +41,8 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 18,
-    fontWeight: "bold",
+    fontFamily: fonts.bold,
     marginBottom: 12,
-    color: "#333",
   },
   map: {
     width: "100%",

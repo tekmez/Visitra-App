@@ -11,6 +11,7 @@ import {
   Platform,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { useAppTheme } from "../hooks/useAppTheme";
 
 interface AddNoteModalProps {
   visible: boolean;
@@ -25,6 +26,7 @@ export const AddNoteModal: React.FC<AddNoteModalProps> = ({
   onSave,
   initialNote = "",
 }) => {
+  const { colors } = useAppTheme();
   const [note, setNote] = useState(initialNote);
 
   const handleSave = () => {
@@ -43,19 +45,39 @@ export const AddNoteModal: React.FC<AddNoteModalProps> = ({
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.container}
       >
-        <View style={styles.content}>
-          <View style={styles.header}>
+        <View
+          style={[styles.content, { backgroundColor: colors.background.modal }]}
+        >
+          <View
+            style={[
+              styles.header,
+              { borderBottomColor: colors.border.primary },
+            ]}
+          >
             <TouchableOpacity onPress={onClose} style={styles.closeButton}>
-              <Ionicons name="close" size={24} color="#000" />
+              <Ionicons name="close" size={24} color={colors.text.primary} />
             </TouchableOpacity>
-            <Text style={styles.title}>Not Ekle</Text>
+            <Text style={[styles.title, { color: colors.text.primary }]}>
+              Not Ekle
+            </Text>
             <TouchableOpacity onPress={handleSave} style={styles.saveButton}>
-              <Text style={styles.saveButtonText}>Kaydet</Text>
+              <Text
+                style={[styles.saveButtonText, { color: colors.secondary }]}
+              >
+                Kaydet
+              </Text>
             </TouchableOpacity>
           </View>
 
           <TextInput
-            style={styles.input}
+            style={[
+              styles.input,
+              {
+                color: colors.text.primary,
+                backgroundColor: colors.background.primary,
+              },
+            ]}
+            placeholderTextColor={colors.text.tertiary}
             multiline
             placeholder="Notunuzu buraya yazın..."
             value={note}

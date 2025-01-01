@@ -7,6 +7,7 @@ import {
   ScrollView,
 } from "react-native";
 import { fonts } from "../theme/fonts";
+import { useAppTheme } from "../hooks/useAppTheme";
 
 type TabType = "places" | "favorites" | "toVisit" | "visited";
 
@@ -16,13 +17,19 @@ type TabBarProps = {
 };
 
 export const TabBar = ({ activeTab, onTabChange }: TabBarProps) => {
+  const { colors } = useAppTheme();
+
   const renderTab = (title: string, type: TabType) => (
     <TouchableOpacity
       style={[styles.tab, activeTab === type && styles.activeTab]}
       onPress={() => onTabChange(type)}
     >
       <Text
-        style={[styles.tabText, activeTab === type && styles.activeTabText]}
+        style={[
+          styles.tabText,
+          { color: colors.text.tertiary },
+          activeTab === type && { color: colors.text.primary },
+        ]}
       >
         {title}
       </Text>
@@ -30,7 +37,9 @@ export const TabBar = ({ activeTab, onTabChange }: TabBarProps) => {
   );
 
   return (
-    <View style={styles.wrapper}>
+    <View
+      style={[styles.wrapper, { borderBottomColor: colors.border.primary }]}
+    >
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}

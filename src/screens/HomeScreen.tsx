@@ -24,6 +24,7 @@ import { categories } from "../constants/categories";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../types/navigation";
+import { useAppTheme } from "../hooks/useAppTheme";
 
 type TabType = "places" | "favorites" | "toVisit" | "visited";
 type NavigationProp = StackNavigationProp<RootStackParamList>;
@@ -40,6 +41,7 @@ const TIMING_CONFIG = {
 };
 
 const HomeScreen = () => {
+  const { colors } = useAppTheme();
   const [activeTab, setActiveTab] = useState<TabType>("places");
   const [places, setPlaces] = useState<Place[]>(initialPlaces);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -161,7 +163,9 @@ const HomeScreen = () => {
       }}
       scrollEventThrottle={16}
     >
-      <Text style={styles.sectionTitle}>Categories</Text>
+      <Text style={[styles.sectionTitle, { color: colors.text.primary }]}>
+        Categories
+      </Text>
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -197,7 +201,7 @@ const HomeScreen = () => {
           ))
         ) : (
           <View style={styles.emptyContainer}>
-            <Text style={styles.emptyText}>
+            <Text style={[styles.emptyText, { color: colors.text.secondary }]}>
               {selectedCategory
                 ? `${selectedCategory} kategorisinde henüz bir yer yok`
                 : activeTab === "favorites"
@@ -215,9 +219,13 @@ const HomeScreen = () => {
   );
 
   return (
-    <GestureHandlerRootView style={styles.container}>
+    <GestureHandlerRootView
+      style={[styles.container, { backgroundColor: colors.background.primary }]}
+    >
       <View style={styles.header}>
-        <Text style={styles.title}>Visitra</Text>
+        <Text style={[styles.title, { color: colors.text.primary }]}>
+          Visitra
+        </Text>
       </View>
 
       <TabBar activeTab={activeTab} onTabChange={setActiveTab} />

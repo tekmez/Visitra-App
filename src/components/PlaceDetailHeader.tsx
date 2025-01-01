@@ -7,6 +7,7 @@ import {
   Platform,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { useAppTheme } from "../hooks/useAppTheme";
 
 interface PlaceDetailHeaderProps {
   title: string;
@@ -17,12 +18,16 @@ export const PlaceDetailHeader: React.FC<PlaceDetailHeaderProps> = ({
   title,
   onBack,
 }) => {
+  const { colors } = useAppTheme();
+
   return (
-    <View style={styles.header}>
+    <View style={[styles.header, { borderBottomColor: colors.border.primary }]}>
       <TouchableOpacity onPress={onBack} style={styles.backButton}>
-        <Ionicons name="arrow-back" size={24} color="#000" />
+        <Ionicons name="arrow-back" size={24} color={colors.text.primary} />
       </TouchableOpacity>
-      <Text style={styles.title}>{title}</Text>
+      <Text style={[styles.title, { color: colors.text.primary }]}>
+        {title}
+      </Text>
     </View>
   );
 };
