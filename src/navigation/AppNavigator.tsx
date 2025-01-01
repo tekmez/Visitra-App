@@ -4,7 +4,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { Ionicons } from "@expo/vector-icons";
 import HomeScreen from "../screens/HomeScreen";
 import AddPlaceScreen from "../screens/AddPlaceScreen";
-import ProfileScreen from "../screens/ProfileScreen";
+import SettingsScreen from "../screens/SettingsScreen";
 import PlaceDetailScreen from "../screens/PlaceDetailScreen";
 import { RootStackParamList, RootTabParamList } from "../types/navigation";
 import { useAppTheme } from "../hooks/useAppTheme";
@@ -25,8 +25,8 @@ const TabNavigator = () => {
             iconName = focused ? "home" : "home-outline";
           } else if (route.name === "Add") {
             iconName = focused ? "add-circle" : "add-circle-outline";
-          } else if (route.name === "Profile") {
-            iconName = focused ? "person" : "person-outline";
+          } else if (route.name === "Settings") {
+            iconName = focused ? "settings" : "settings-outline";
           }
 
           return <Ionicons name={iconName} size={size} color={color} />;
@@ -51,9 +51,9 @@ const TabNavigator = () => {
         options={{ tabBarLabel: "Ekle" }}
       />
       <Tab.Screen
-        name="Profile"
-        component={ProfileScreen}
-        options={{ tabBarLabel: "Profil" }}
+        name="Settings"
+        component={SettingsScreen}
+        options={{ tabBarLabel: "Settings" }}
       />
     </Tab.Navigator>
   );

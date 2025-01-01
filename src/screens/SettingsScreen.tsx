@@ -20,7 +20,7 @@ import Reanimated, {
 import DeleteCategoryModal from "@/components/DeleteCategoryModal";
 import { useAppTheme } from "../hooks/useAppTheme";
 
-const ProfileScreen: React.FC = () => {
+const SettingsScreen: React.FC = () => {
   const { colors, isDark, toggleColorScheme } = useAppTheme();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
@@ -66,7 +66,7 @@ const ProfileScreen: React.FC = () => {
       <GestureHandlerRootView>
         <View style={styles.header}>
           <Text style={[styles.headerTitle, { color: colors.text.primary }]}>
-            Profile & Settings
+            Settings
           </Text>
         </View>
 
@@ -103,7 +103,7 @@ const ProfileScreen: React.FC = () => {
               onPress={() => setIsModalVisible(true)}
               style={[styles.addButton, { backgroundColor: colors.secondary }]}
             >
-              <AntDesign name="plus" size={20} color={colors.text.primary} />
+              <AntDesign name="plus" size={20} color={"white"} />
             </TouchableOpacity>
           </View>
           {categoriesList.map((category) => (
@@ -200,4 +200,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProfileScreen;
+export default SettingsScreen;

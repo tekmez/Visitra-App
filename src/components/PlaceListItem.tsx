@@ -66,7 +66,7 @@ export const PlaceListItem = ({
             <Ionicons
               name={isFavorite ? "heart" : "heart-outline"}
               size={24}
-              color={isFavorite ? colors.status.error : colors.text.primary}
+              color={isFavorite ? colors.status.error : "white"}
             />
           </TouchableOpacity>
         </View>
@@ -130,6 +130,6 @@ const styles = StyleSheet.create({
     top: 8,
     right: 8,
     borderRadius: 20,
-    padding: 8,
+    padding: 6,
   },
 });

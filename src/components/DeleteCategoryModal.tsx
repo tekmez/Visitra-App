@@ -35,7 +35,7 @@ const DeleteCategoryModal: React.FC<DeleteCategoryModalProps> = ({
           ]}
         >
           <Text style={[styles.modalTitle, { color: colors.text.primary }]}>
-            Silmek İstediğinize Emin Misiniz
+            Kategoriyi silmek istediğinizden emin misiniz ?
           </Text>
 
           <View style={styles.modalButtons}>
@@ -43,14 +43,20 @@ const DeleteCategoryModal: React.FC<DeleteCategoryModalProps> = ({
               style={[
                 styles.modalButton,
                 styles.cancelButton,
-                { backgroundColor: colors.background.secondary },
+                {
+                  backgroundColor: colors.background.secondary,
+                  borderColor: colors.border.secondary,
+                  borderWidth: 1,
+                },
               ]}
               onPress={onClose}
             >
               <Text
                 style={[
                   styles.cancelButtonText,
-                  { color: colors.text.primary },
+                  {
+                    color: colors.text.primary,
+                  },
                 ]}
               >
                 İptal
@@ -65,12 +71,7 @@ const DeleteCategoryModal: React.FC<DeleteCategoryModalProps> = ({
               ]}
               onPress={() => onDelete(categoryTitle)}
             >
-              <Text
-                style={[
-                  styles.deleteButtonText,
-                  { color: colors.text.primary },
-                ]}
-              >
+              <Text style={[styles.deleteButtonText, { color: "white" }]}>
                 Sil
               </Text>
             </TouchableOpacity>
