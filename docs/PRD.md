@@ -4,6 +4,7 @@
 Visitra is a mobile application that allows users to manage their travel plans and record their experiences.
 
 ## Goals
+- Users should be able to securely sign up and login using Email, Google, and Apple authentication
 - Users should be able to save the places they want to travel to.
 - Users should be able to categorize locations.
 - Users should be able to add notes.
@@ -11,6 +12,9 @@ Visitra is a mobile application that allows users to manage their travel plans a
 - Users should be able to manage their places with various filtering options.
 
 ## User Requirements
+- Users should be able to register and login using their email and password
+- Users should be able to authenticate using their Google or Apple accounts
+- Users should be able to reset their password if forgotten
 - Users should be able to add new places through the application.
 - Users should be able to upload photos for the places they add.
 - Users should be able to take notes about the places.
@@ -18,6 +22,7 @@ Visitra is a mobile application that allows users to manage their travel plans a
 
 ## Technical Requirements
 - **Core Technologies**: React Native, Expo SDK 52, TypeScript
+- **Authentication**: Supabase Auth, Google OAuth, Apple Sign In
 - **Database**: Supabase
 - **Local Storage**: AsyncStorage
 - **Map and Location Services**: React Native Maps, Expo Location

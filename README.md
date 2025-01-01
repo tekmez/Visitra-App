@@ -2,6 +2,7 @@
 
 ## Project Overview
 Visitra is a mobile application that allows users to manage their travel plans and record their experiences. Users can:
+- Sign up and login with Email, Google, and Apple authentication
 - Save the places they want to travel to
 - Categorize locations
 - Add new categories
