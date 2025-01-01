@@ -43,11 +43,16 @@ const ProfileScreen: React.FC = () => {
       };
     });
 
+    const handleDeletePress = () => {
+      setIsDeleteModalVisible(true);
+      drag.value = 0;
+    };
+
     return (
       <Reanimated.View style={styleAnimation}>
         <TouchableOpacity
           style={styles.deleteButton}
-          onPress={() => setIsDeleteModalVisible(true)}
+          onPress={handleDeletePress}
         >
           <AntDesign name="delete" size={24} color={"red"} />
         </TouchableOpacity>
